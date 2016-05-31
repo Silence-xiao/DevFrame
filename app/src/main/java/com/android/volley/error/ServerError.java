@@ -14,18 +14,22 @@
  * limitations under the License.
  */
 
-package com.android.volley;
+package com.android.volley.error;
+
+import com.android.volley.NetworkResponse;
+import com.android.volley.VolleyError;
 
 /**
- * Error indicating that no connection could be established when performing a Volley request.
+ * Indicates that the server responded with an error response.
  */
 @SuppressWarnings("serial")
-public class NoConnectionError extends NetworkError {
-    public NoConnectionError() {
-        super();
+public class ServerError extends VolleyError {
+    public ServerError(NetworkResponse networkResponse) {
+        super(networkResponse);
     }
 
-    public NoConnectionError(Throwable reason) {
-        super(reason);
+    public ServerError() {
+        super();
     }
 }
+

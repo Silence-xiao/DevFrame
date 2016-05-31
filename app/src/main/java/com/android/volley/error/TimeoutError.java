@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-package com.android.volley;
+package com.android.volley.error;
+
+import com.android.volley.VolleyError;
 
 /**
  * Indicates that the connection or the socket timed out.

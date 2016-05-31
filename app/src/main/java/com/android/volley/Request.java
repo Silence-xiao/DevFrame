@@ -23,6 +23,7 @@ import android.os.Looper;
 import android.text.TextUtils;
 
 import com.android.volley.VolleyLog.MarkerLog;
+import com.android.volley.error.TimeoutError;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
