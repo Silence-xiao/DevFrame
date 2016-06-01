@@ -1,4 +1,4 @@
-package com.homework.hui.utils;
+package hui.devframe.common.util;
 
 import android.content.Context;
 import android.os.Environment;

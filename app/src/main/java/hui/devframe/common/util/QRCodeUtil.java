@@ -1,4 +1,4 @@
-package com.homework.hui.utils;
+package hui.devframe.common.util;
 
 import android.graphics.Bitmap;
 import android.graphics.Matrix;

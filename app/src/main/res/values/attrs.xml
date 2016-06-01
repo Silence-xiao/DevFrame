@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="pager_indicator">
+        <attr name="dot_size" format="integer" />
+        <attr name="dot_space" format="integer" />
+        <attr name="dot_back" format="color" />
+        <attr name="dot_fore" format="color" />
+    </declare-styleable>
+</resources>
