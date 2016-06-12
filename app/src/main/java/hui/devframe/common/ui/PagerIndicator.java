@@ -16,10 +16,10 @@ import hui.devframe.common.util.ScreenUtil;
  * Created by wanghui on 16/5/31.
  */
 public class PagerIndicator extends View {
-    private static final int DOT_SIZE = 10;
-    private static final int DOT_SPACE = 20;
-    private static final int BACK_COLOR = 0xff000000;
-    private static final int FORE_COLOR = 0xffffffff;
+    private static final int DEFAULT_DOT_SIZE = 10;
+    private static final int DEFAULT_DOT_SPACE = 20;
+    private static final int DEFAULT_BACK_COLOR = 0xff000000;
+    private static final int DEFAULT_FORE_COLOR = 0xffffffff;
 
     private Context context;
     private int number = 0;
@@ -52,10 +52,10 @@ public class PagerIndicator extends View {
 
     private void init(AttributeSet attrs) {
         final TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.pager_indicator);
-        size = ScreenUtil.dp2px(context, a.getInt(R.styleable.pager_indicator_dot_size, DOT_SIZE));
-        space = ScreenUtil.dp2px(context, a.getInt(R.styleable.pager_indicator_dot_space, DOT_SPACE));
-        back_color = a.getColor(R.styleable.pager_indicator_dot_back, BACK_COLOR);
-        fore_color = a.getColor(R.styleable.pager_indicator_dot_fore, FORE_COLOR);
+        size = ScreenUtil.dp2px(context, a.getInt(R.styleable.pager_indicator_dot_size, DEFAULT_DOT_SIZE));
+        space = ScreenUtil.dp2px(context, a.getInt(R.styleable.pager_indicator_dot_space, DEFAULT_DOT_SPACE));
+        back_color = a.getColor(R.styleable.pager_indicator_dot_back, DEFAULT_BACK_COLOR);
+        fore_color = a.getColor(R.styleable.pager_indicator_dot_fore, DEFAULT_FORE_COLOR);
         a.recycle();
     }
 
@@ -99,6 +99,23 @@ public class PagerIndicator extends View {
             setVisibility(VISIBLE);
             this.number = pager.getAdapter().getCount();
             invalidate();
+
+            pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                @Override
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                    setOffset(position, positionOffset);
+                }
+
+                @Override
+                public void onPageSelected(int position) {
+
+                }
+
+                @Override
+                public void onPageScrollStateChanged(int state) {
+
+                }
+            });
         }
     }
 
@@ -108,7 +125,7 @@ public class PagerIndicator extends View {
      * @param position       当前位置
      * @param positionOffset 当前偏移的百分比
      */
-    public void setOffset(int position, float positionOffset) {
+    private void setOffset(int position, float positionOffset) {
         this.mPos = position;
         this.mOffset = positionOffset;
         postInvalidate();

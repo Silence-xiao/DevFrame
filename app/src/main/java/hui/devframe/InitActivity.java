@@ -1,16 +1,13 @@
 package hui.devframe;
 
-import android.content.Intent;
-import android.net.Uri;
+import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.zip.Inflater;
 
 import hui.devframe.common.adapter.SimplePagerAdapter;
 import hui.devframe.common.ui.PagerIndicator;
@@ -38,21 +35,5 @@ public class InitActivity extends AppCompatActivity {
 
         mIndicator = (PagerIndicator) findViewById(R.id.init_indicator);
         mIndicator.setViewPager(mPager);
-
-        mPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                mIndicator.setOffset(position, positionOffset);
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
     }
 }
