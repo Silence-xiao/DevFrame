@@ -1,4 +1,4 @@
-package hui.devframe.common.ui;
+package hui.devframe.ui;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -9,7 +9,7 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import hui.devframe.R;
-import hui.devframe.common.util.ScreenUtil;
+import hui.devframe.util.ScreenUtil;
 
 /**
  * 指示器

@@ -1,71 +1,82 @@
 package hui.devframe;
 
-import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
-import android.util.DisplayMetrics;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.Button;
 
-import java.util.ArrayList;
-import java.util.List;
+import hui.devframe.base.BaseActivity;
+import hui.devframe.util.LogUtils;
+import hui.devframe.ui.wave.WaveHelper;
+import hui.devframe.ui.wave.WaveView;
+import hui.devframe.util.ReturnCall;
 
-import hui.devframe.common.adapter.SimplePagerAdapter;
-import hui.devframe.common.ui.PagerIndicator;
-import hui.devframe.common.util.LogUtils;
-
-public class InitActivity extends AppCompatActivity {
+public class InitActivity extends BaseActivity {
     private LogUtils log = LogUtils.getLog(InitActivity.class.getSimpleName());
 
-    private ViewPager mPager;
-    private PagerIndicator mIndicator;
-    private List<View> mViews = new ArrayList<>();
+    WaveView mWaveView;
+    WaveHelper mWaveHelper;
+
+    ViewGroup mRoot;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_init);
 
-        LayoutInflater inflater = LayoutInflater.from(this);
-        mViews.add(inflater.inflate(R.layout.pager_view1, null));
-        mViews.add(inflater.inflate(R.layout.pager_view2, null));
-        mViews.add(inflater.inflate(R.layout.pager_view3, null));
-
-        mPager = (ViewPager) findViewById(R.id.init_pager);
-        mPager.setAdapter(new SimplePagerAdapter(this, mViews));
-
-        mIndicator = (PagerIndicator) findViewById(R.id.init_indicator);
-        mIndicator.setViewPager(mPager);
-
-
-        // 关于计算view高度
-        final View decorView = getWindow().getDecorView();
-        final View rootView = decorView.findViewById(android.R.id.content);
-
-        View xmlFileRootView = ((ViewGroup) rootView).getChildAt(0);
-
-        log.e("decorView" + decorView.toString() + "  id:" + decorView.getId());
-        log.e("rootView" + rootView.toString() + "  id:" + rootView.getId());
-
-        mPager.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            // 计算高度
-            @Override
-            public void onGlobalLayout() {
-                int heightDiff = decorView.getHeight() - rootView.getHeight();
-                log.e(decorView.getHeight() + " " + rootView.getHeight() + " " + heightDiff + "");
-                mPager.getViewTreeObserver().removeGlobalOnLayoutListener(this); // 会多次执行记得移除
-            }
-        });
-
-        log.e(getScreenHeight(this) + "");
+        initView();
     }
 
-    public int getScreenHeight(Activity activity) {
-        DisplayMetrics metrics = new DisplayMetrics();
-        activity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        return metrics.heightPixels;
+    private void initView() {
+        mRoot = (ViewGroup) findViewById(R.id.init_root);
+
+        mRoot.addView(createButton("测试Fragment", new ReturnCall() {
+            @Override
+            public void call() {
+                startActivity(new Intent(InitActivity.this, FragmentLearnActivity.class));
+            }
+        }));
+        mRoot.addView(createButton("测试ViewPager", new ReturnCall() {
+            @Override
+            public void call() {
+                startActivity(new Intent(InitActivity.this, PagerLearnActivity.class));
+            }
+        }));
+
+
+        mWaveView = (WaveView) findViewById(R.id.init_wave_view);
+        mWaveHelper = new WaveHelper(mWaveView);
+    }
+
+    private Button createButton(String text, final ReturnCall call) {
+        Button btn = new Button(this);
+        btn.setText(text);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                call.call();
+            }
+        });
+        return btn;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mWaveHelper.start();
+
+        Animation mAnim = AnimationUtils.loadAnimation(this, R.anim.fudao_buy_btn_scale_amin);
+        mAnim.setRepeatCount(2);
+        mAnim.setFillAfter(false);
+        findViewById(R.id.init_btn).startAnimation(mAnim);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mWaveHelper.cancel();
     }
 }

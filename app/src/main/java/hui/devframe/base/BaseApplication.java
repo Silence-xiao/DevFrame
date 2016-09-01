@@ -1,4 +1,4 @@
-package hui.devframe;
+package hui.devframe.base;
 
 import android.app.Application;
 

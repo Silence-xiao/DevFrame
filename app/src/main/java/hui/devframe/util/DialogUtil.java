@@ -1,4 +1,4 @@
-package hui.devframe.common.util;
+package hui.devframe.util;
 
 import android.app.ProgressDialog;
 import android.content.Context;
