@@ -6,4 +6,8 @@
         <attr name="dot_back" format="color" />
         <attr name="dot_fore" format="color" />
     </declare-styleable>
+
+    <declare-styleable name="wave">
+        <attr name="dynamicHeight" format="dimension" />
+    </declare-styleable>
 </resources>

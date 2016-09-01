@@ -2,13 +2,16 @@ package hui.devframe;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.EditText;
 
 import hui.devframe.base.BaseActivity;
+import hui.devframe.ui.DynamicWave;
 import hui.devframe.util.LogUtils;
 import hui.devframe.ui.wave.WaveHelper;
 import hui.devframe.ui.wave.WaveView;
@@ -17,10 +20,8 @@ import hui.devframe.util.ReturnCall;
 public class InitActivity extends BaseActivity {
     private LogUtils log = LogUtils.getLog(InitActivity.class.getSimpleName());
 
-    WaveView mWaveView;
-    WaveHelper mWaveHelper;
-
     ViewGroup mRoot;
+    DynamicWave mWave;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,10 +46,15 @@ public class InitActivity extends BaseActivity {
                 startActivity(new Intent(InitActivity.this, PagerLearnActivity.class));
             }
         }));
+        mRoot.addView(createButton("水增加", new ReturnCall() {
+            @Override
+            public void call() {
+                EditText edit = (EditText) findViewById(R.id.init_edit);
+                mWave.updateWave(0.5f, edit.getText().toString());
+            }
+        }));
 
-
-        mWaveView = (WaveView) findViewById(R.id.init_wave_view);
-        mWaveHelper = new WaveHelper(mWaveView);
+        mWave = (DynamicWave) findViewById(R.id.init_wave);
     }
 
     private Button createButton(String text, final ReturnCall call) {
@@ -66,17 +72,13 @@ public class InitActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        mWaveHelper.start();
 
-        Animation mAnim = AnimationUtils.loadAnimation(this, R.anim.fudao_buy_btn_scale_amin);
-        mAnim.setRepeatCount(2);
-        mAnim.setFillAfter(false);
-        findViewById(R.id.init_btn).startAnimation(mAnim);
+//        Animation mAnim = AnimationUtils.loadAnimation(this, R.anim.fudao_buy_btn_scale_amin);
+//        findViewById(R.id.init_btn).startAnimation(mAnim);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        mWaveHelper.cancel();
     }
 }

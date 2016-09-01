@@ -34,12 +34,13 @@ import java.util.zip.ZipInputStream;
 public class FileUtils {
 
     private static final int BUFFER_SIZE = 8 * 1024; // 8 KB
-    
-	/**
-	 * 通过文件路径获取保存到本地的的Model
-	 * @param path
-	 * @return
-	 */
+
+    /**
+     * 通过文件路径获取保存到本地的的Model
+     *
+     * @param path
+     * @return
+     */
     public static Object unserializeObject(String path) {
         File file = new File(path);
         if (!file.exists()) {
@@ -67,6 +68,7 @@ public class FileUtils {
 
     /**
      * 将文件序列化并且保存到本地
+     *
      * @param path
      * @param o
      * @return
@@ -100,9 +102,10 @@ public class FileUtils {
 
     /**
      * 判断是否用写sd卡目录的权限
+     *
      * @return
      */
-    public static boolean isExternalStorageCanWrite(){
+    public static boolean isExternalStorageCanWrite() {
         return Environment.getExternalStorageDirectory().canWrite();
     }
 
@@ -122,7 +125,7 @@ public class FileUtils {
      *
      * @param path: the specified file path
      * @return the free space size or 0 if the path is not exist or is not a
-     *         real file path
+     * real file path
      */
     public static long getFreeSpace(File path) {
         long size = 0;
@@ -132,20 +135,21 @@ public class FileUtils {
         }
         return size;
     }
-    public static boolean writeFile(String path,byte[] data){
-        if(data == null){
+
+    public static boolean writeFile(String path, byte[] data) {
+        if (data == null) {
             return false;
-        }else{
+        } else {
             BufferedOutputStream bos = null;
-            try{
+            try {
                 bos = new BufferedOutputStream(new FileOutputStream(path));
-                bos.write(data,0,data.length);
+                bos.write(data, 0, data.length);
                 return true;
-            }catch(Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
                 return false;
-            }finally {
-                if(bos != null){
+            } finally {
+                if (bos != null) {
                     try {
                         bos.close();
                     } catch (IOException e) {
@@ -175,7 +179,6 @@ public class FileUtils {
             }
             return true;
         } catch (IOException e) {
-            //todo  Common Execption Handler;
             return false;
         } finally {
             if (writer != null) {
@@ -194,8 +197,9 @@ public class FileUtils {
             }
         }
     }
+
     public static boolean writeFile(String path, String content) {
-        if(null == content){
+        if (null == content) {
             return false;
         }
         BufferedWriter writer = null;
@@ -206,17 +210,16 @@ public class FileUtils {
             writer.write(content);
             return true;
         } catch (IOException e) {
-            //todo  Common Execption Handler;
             return false;
-        }finally {
-            if(writer !=null){
+        } finally {
+            if (writer != null) {
                 try {
                     writer.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
-            if(fos != null){
+            if (fos != null) {
                 try {
                     fos.close();
                 } catch (IOException e) {
@@ -225,6 +228,7 @@ public class FileUtils {
             }
         }
     }
+
     public static byte[] readFile(File file) {
         byte[] result = null;
         FileInputStream fis = null;
@@ -239,15 +243,15 @@ public class FileUtils {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
-        }finally {
-            if(fis != null){
+        } finally {
+            if (fis != null) {
                 try {
                     fis.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
-            if(bis!= null){
+            if (bis != null) {
                 try {
                     bis.close();
                 } catch (IOException e) {
@@ -257,62 +261,62 @@ public class FileUtils {
         }
         return result;
     }
-    public static boolean delFile(File file){
-        if(null == file){
+
+    public static boolean delFile(File file) {
+        if (null == file) {
             return false;
         }
-        if(file.exists()){
+        if (file.exists()) {
             return file.delete();
         }
         return true;
     }
+
     public static boolean delFile(String path) {
         return delFile(new File(path));
     }
 
     /**
      * 清空目录的内容（不包括目录本身)
+     *
      * @param dir
      */
-    public static void clearDir(File dir)
-    {
-        if(dir.isDirectory()){
+    public static void clearDir(File dir) {
+        if (dir.isDirectory()) {
             File[] files = dir.listFiles();
-            if(files != null){
-                for(File file : files){
-                    if(file.isDirectory()){
+            if (files != null) {
+                for (File file : files) {
+                    if (file.isDirectory()) {
                         deleteDir(dir);
-                    }else{
+                    } else {
                         delFile(file);
                     }
                 }
             }
         }
     }
+
     /**
      * 清空整个目录（包括目录本身)
+     *
      * @param dir
      */
-    public static void deleteDir(File dir)
-    {
-        if(dir.isDirectory())
-        {
-            File[] files=dir.listFiles();
-            if(files == null){
+    public static void deleteDir(File dir) {
+        if (dir.isDirectory()) {
+            File[] files = dir.listFiles();
+            if (files == null) {
                 dir.delete();
                 return;
             }
-            for(int i=0;i<files.length;i++)
-            {
+            for (int i = 0; i < files.length; i++) {
                 deleteDir(files[i]);
             }
             dir.delete();
-        }
-        else
-        {
+        } else {
             dir.delete();
         }
     }
+
     public static byte[] readInputStream(InputStream input) {
         byte[] data = null;
         try {
@@ -331,6 +335,7 @@ public class FileUtils {
 
         return data;
     }
+
     /**
      * 复制IO流
      *
@@ -356,21 +361,22 @@ public class FileUtils {
 
     /**
      * 复制文件
+     *
      * @param src 源文件
      * @param des 目的文件
      * @throws IOException
      */
-    public static void copy(File src, File des) throws IOException{
-        if(des.exists()){
+    public static void copy(File src, File des) throws IOException {
+        if (des.exists()) {
             des.delete();
         }
         FileInputStream fis = new FileInputStream(src);
         FileOutputStream fos = new FileOutputStream(des);
-        try{
+        try {
             FileUtils.copyStream(fis, fos);
-        }catch (IOException e){
+        } catch (IOException e) {
             throw e;
-        }finally {
+        } finally {
             fis.close();
             fos.close();
         }
@@ -378,41 +384,43 @@ public class FileUtils {
 
     /**
      * 剪切文件
+     *
      * @param src 源文件
      * @param des 目的文件
      * @throws IOException
      */
-    public static void cut(File src, File des) throws  IOException {
+    public static void cut(File src, File des) throws IOException {
         copy(src, des);
         delFile(src);
     }
 
     /**
      * 从Raw资源中读取一张图片到外部存储卡的一个文件
+     *
      * @param context
      * @param rawResId
      * @param file
      * @return 读取失败或者外部存储卡不存在返回false
      */
-    public static boolean readRawIntoFile(Context context, int rawResId, File file){
+    public static boolean readRawIntoFile(Context context, int rawResId, File file) {
         OutputStream os = null;
         InputStream is = null;
-        if(file.exists()){
+        if (file.exists()) {
             FileUtils.delFile(file);
         }
-        try{
+        try {
             os = new FileOutputStream(file);
             is = context.getResources().openRawResource(rawResId);
-            FileUtils.copyStream(is,os);
+            FileUtils.copyStream(is, os);
             return true;
-        }catch (IOException e){
+        } catch (IOException e) {
             return false;
-        }finally {
+        } finally {
             try {
-                if(os != null){
+                if (os != null) {
                     os.close();
                 }
-                if(is != null){
+                if (is != null) {
                     is.close();
                 }
             } catch (IOException e) {
@@ -420,36 +428,37 @@ public class FileUtils {
             }
         }
     }
+
     public static boolean unzip(String filePath, String outPath) {
         ZipInputStream inputStream = null;
         FileOutputStream out = null;
         try {
             inputStream = new ZipInputStream(new FileInputStream(filePath));
             File outDirectory = new File(outPath);
-            if(!outDirectory.isDirectory()) {
-                if(!outDirectory.mkdirs()) {
+            if (!outDirectory.isDirectory()) {
+                if (!outDirectory.mkdirs()) {
                     throw new FileNotFoundException();
                 }
             }
             ZipEntry entry;
             byte[] buffer = new byte[1024];
-            while((entry = inputStream.getNextEntry()) != null) {
+            while ((entry = inputStream.getNextEntry()) != null) {
                 String name = entry.getName();
-                if(!entry.isDirectory()) {
-                    File file = new File(outPath , name);
+                if (!entry.isDirectory()) {
+                    File file = new File(outPath, name);
                     File folder = file.getParentFile();
-                    if(folder == null || (!folder.exists() && !folder.mkdirs())) {
+                    if (folder == null || (!folder.exists() && !folder.mkdirs())) {
                         throw new FileNotFoundException();
                     }
-                    if(file.exists()) {
+                    if (file.exists()) {
                         file.delete();
                     }
-                    if(!file.createNewFile()) {
+                    if (!file.createNewFile()) {
                         throw new FileNotFoundException();
                     }
                     out = new FileOutputStream(file);
                     int len;
-                    while((len = inputStream.read(buffer)) != -1) {
+                    while ((len = inputStream.read(buffer)) != -1) {
                         out.write(buffer, 0, len);
                         out.flush();
                     }
@@ -459,14 +468,14 @@ public class FileUtils {
             return true;
         } catch (FileNotFoundException e) {
         } catch (IOException e) {
-        }finally{
-            if(inputStream != null){
+        } finally {
+            if (inputStream != null) {
                 try {
                     inputStream.close();
                 } catch (IOException e) {
                 }
             }
-            if(out != null){
+            if (out != null) {
                 try {
                     out.close();
                 } catch (IOException e) {
@@ -477,25 +486,25 @@ public class FileUtils {
         }
         return false;
     }
-    public static boolean isApk(File file){
-        if(file == null || !file.exists()){
+
+    public static boolean isApk(File file) {
+        if (file == null || !file.exists()) {
             return false;
         }
         ZipInputStream zipInputStream = null;
-        try{
+        try {
             zipInputStream = new ZipInputStream(new FileInputStream(file));
             ZipEntry ze;
-            while((ze = zipInputStream.getNextEntry()) != null){
-                if(ze.getName().equals("AndroidManifest.xml")){
+            while ((ze = zipInputStream.getNextEntry()) != null) {
+                if (ze.getName().equals("AndroidManifest.xml")) {
                     return true;
                 }
             }
-        }catch (Exception e){
+        } catch (Exception e) {
 
-        }
-        finally {
+        } finally {
             try {
-                if(zipInputStream != null){
+                if (zipInputStream != null) {
                     zipInputStream.close();
                 }
             } catch (IOException e) {
@@ -503,6 +512,7 @@ public class FileUtils {
         }
         return false;
     }
+
     public static String md5(File updateFile) {
         MessageDigest digest;
         try {
