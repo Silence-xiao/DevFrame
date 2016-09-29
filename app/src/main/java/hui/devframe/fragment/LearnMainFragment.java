@@ -9,16 +9,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import hui.devframe.R;
-import hui.devframe.fragment.Fragment1;
-import hui.devframe.fragment.Fragment2;
 
 
 /**
  * main fragment
  */
-public class FragmentMain extends Fragment {
+public class LearnMainFragment extends Fragment {
 
-    public FragmentMain() {
+    public LearnMainFragment() {
     }
 
 
@@ -30,13 +28,13 @@ public class FragmentMain extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_main_layout, container, false);
+        View v = inflater.inflate(R.layout.test_main_fragment, container, false);
         v.findViewById(R.id.main_button_one).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FragmentManager fm = getActivity().getSupportFragmentManager();
                 FragmentTransaction ft = fm.beginTransaction();
-                ft.replace(R.id.main_fragment_container, new Fragment1());
+                ft.replace(R.id.main_fragment_container, new LearnOneFragment());
                 ft.commit();
             }
         });
@@ -46,7 +44,7 @@ public class FragmentMain extends Fragment {
             public void onClick(View v) {
                 FragmentManager fm = getActivity().getSupportFragmentManager();
                 FragmentTransaction ft = fm.beginTransaction();
-                ft.replace(R.id.main_fragment_container, new Fragment2());
+                ft.replace(R.id.main_fragment_container, new LearnTwoFragment());
                 ft.commit();
             }
         });

@@ -9,7 +9,7 @@ import hui.devframe.util.DialogUtil;
  */
 public class BaseActivity extends AppCompatActivity {
 
-    protected void toast(String string) {
+    public void toast(String string) {
         DialogUtil.toast(this, string);
     }
 }

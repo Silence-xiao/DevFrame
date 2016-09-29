@@ -2,31 +2,28 @@ package hui.devframe;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.EditText;
 
+import java.util.ArrayList;
+
+import hui.devframe.adapter.ItemAdapter;
 import hui.devframe.base.BaseActivity;
-import hui.devframe.ui.DynamicWave;
+import hui.devframe.view.NoScrollGridView;
 import hui.devframe.util.LogUtils;
-import hui.devframe.ui.wave.WaveHelper;
-import hui.devframe.ui.wave.WaveView;
 import hui.devframe.util.ReturnCall;
+import hui.devframe.veex.VeexActivity;
 
 public class InitActivity extends BaseActivity {
     private LogUtils log = LogUtils.getLog(InitActivity.class.getSimpleName());
 
     ViewGroup mRoot;
-    DynamicWave mWave;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_init);
+        setContentView(R.layout.init_activity);
 
         initView();
     }
@@ -46,15 +43,18 @@ public class InitActivity extends BaseActivity {
                 startActivity(new Intent(InitActivity.this, PagerLearnActivity.class));
             }
         }));
-        mRoot.addView(createButton("水增加", new ReturnCall() {
+        mRoot.addView(createButton("测试Matrix", new ReturnCall() {
             @Override
             public void call() {
-                EditText edit = (EditText) findViewById(R.id.init_edit);
-                mWave.updateWave(0.5f, edit.getText().toString());
+                startActivity(new Intent(InitActivity.this, MatrixLearnActivity.class));
             }
         }));
-
-        mWave = (DynamicWave) findViewById(R.id.init_wave);
+        mRoot.addView(createButton("veex", new ReturnCall() {
+            @Override
+            public void call() {
+                startActivity(new Intent(InitActivity.this, VeexActivity.class));
+            }
+        }));
     }
 
     private Button createButton(String text, final ReturnCall call) {
@@ -72,9 +72,6 @@ public class InitActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
-//        Animation mAnim = AnimationUtils.loadAnimation(this, R.anim.fudao_buy_btn_scale_amin);
-//        findViewById(R.id.init_btn).startAnimation(mAnim);
     }
 
     @Override

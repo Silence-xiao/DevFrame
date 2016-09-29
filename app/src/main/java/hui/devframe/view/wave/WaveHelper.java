@@ -1,4 +1,4 @@
-package hui.devframe.ui.wave;
+package hui.devframe.view.wave;
 
 import android.animation.Animator;
 import android.animation.AnimatorSet;

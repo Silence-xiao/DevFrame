@@ -1,4 +1,4 @@
-package hui.devframe.ui;
+package hui.devframe.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;

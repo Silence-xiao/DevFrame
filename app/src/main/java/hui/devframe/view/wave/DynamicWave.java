@@ -1,4 +1,4 @@
-package hui.devframe.ui;
+package hui.devframe.view.wave;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -103,7 +103,7 @@ public class DynamicWave extends View {
         }
 
         // 引发view重绘，一般可以考虑延迟20-30ms重绘，空出时间片
-        postDelayed(run, 20);
+        postDelayed(run, 0);
     }
 
     Runnable run = new Runnable() {
@@ -127,23 +127,29 @@ public class DynamicWave extends View {
     }
 
     private float mAddI;
-    public void updateWave(float ratio,float mI) {
+    private int mTime;
+
+    public void updateWave(float ratio, float mI, int time) {
         mSetRatio = ratio;
         mAddI = mI;
         mCurRatio = 0;
+        mTime = time;
         addRatio();
     }
 
     private void addRatio() {
         if (mCurRatio < mSetRatio) {
-            mCurRatio += 0.02;
+            mCurRatio += mAddI;
+            if (mCurRatio > 1.0) {
+                mCurRatio = 1.0f;
+            }
             postInvalidate();
             postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     addRatio();
                 }
-            },60);
+            }, mTime);
         }
     }
 

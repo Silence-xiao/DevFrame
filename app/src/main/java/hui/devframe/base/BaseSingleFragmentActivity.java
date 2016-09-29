@@ -21,7 +21,7 @@ public abstract class BaseSingleFragmentActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_single_fragment_layout);
+        setContentView(R.layout.base_single_fragment_activity);
 
         FragmentManager fm = getSupportFragmentManager();
         singleFragment = fm.findFragmentById(R.id.fragment_container);

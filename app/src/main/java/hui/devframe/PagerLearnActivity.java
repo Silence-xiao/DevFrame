@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import hui.devframe.adapter.SimplePagerAdapter;
-import hui.devframe.ui.PagerIndicator;
+import hui.devframe.view.PagerIndicator;
 
 public class PagerLearnActivity extends AppCompatActivity {
 
@@ -22,12 +22,12 @@ public class PagerLearnActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pager_learn);
+        setContentView(R.layout.ui_view_pager_activity);
 
         LayoutInflater inflater = LayoutInflater.from(this);
-        mViews.add(inflater.inflate(R.layout.pager_view1_layout, null));
-        mViews.add(inflater.inflate(R.layout.pager_view2_layout, null));
-        mViews.add(inflater.inflate(R.layout.pager_view3_layout, null));
+        mViews.add(inflater.inflate(R.layout.ui_view_pager_view1_layout, null));
+        mViews.add(inflater.inflate(R.layout.ui_view_pager_view2_layout, null));
+        mViews.add(inflater.inflate(R.layout.ui_view_pager_view3_layout, null));
 
         mPager = (ViewPager) findViewById(R.id.init_pager);
         mPager.setAdapter(new SimplePagerAdapter(this, mViews));

@@ -12,8 +12,8 @@ import hui.devframe.R;
 /**
  * fragment2
  */
-public class Fragment2 extends Fragment {
-    public Fragment2() {
+public class LearnTwoFragment extends Fragment {
+    public LearnTwoFragment() {
     }
 
     @Override
@@ -24,6 +24,6 @@ public class Fragment2 extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment2_layout, container, false);
+        return inflater.inflate(R.layout.fragment_learn_two_layout, container, false);
     }
 }

@@ -5,7 +5,7 @@ import android.support.v4.app.Fragment;
 
 import hui.devframe.base.BaseSingleFragmentActivity;
 import hui.devframe.util.LogUtils;
-import hui.devframe.fragment.FragmentMain;
+import hui.devframe.fragment.LearnMainFragment;
 
 public class FragmentLearnActivity extends BaseSingleFragmentActivity {
 
@@ -18,6 +18,6 @@ public class FragmentLearnActivity extends BaseSingleFragmentActivity {
 
     @Override
     protected Fragment createFragment() {
-        return new FragmentMain();
+        return new LearnMainFragment();
     }
 }

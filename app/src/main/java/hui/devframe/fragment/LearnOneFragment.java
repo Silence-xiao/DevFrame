@@ -12,9 +12,9 @@ import hui.devframe.R;
 /**
  * fragment1
  */
-public class Fragment1 extends Fragment {
+public class LearnOneFragment extends Fragment {
 
-    public Fragment1() {
+    public LearnOneFragment() {
     }
 
     @Override
@@ -25,6 +25,6 @@ public class Fragment1 extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment1_layout, container, false);
+        return inflater.inflate(R.layout.fragment_learn_one_layout, container, false);
     }
 }

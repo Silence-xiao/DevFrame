@@ -16,11 +16,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ForumTestActivity"
-            android:windowSoftInputMode="stateAlwaysHidden" />
         <activity android:name=".FragmentLearnActivity" />
-        <activity android:name=".PagerLearnActivity"></activity>
+        <activity android:name=".PagerLearnActivity" />
+        <activity android:name=".MatrixLearnActivity" />
+        <activity android:name=".veex.VeexActivity"></activity>
     </application>
-
 </manifest>
