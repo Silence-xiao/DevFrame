@@ -19,6 +19,6 @@
         <activity android:name=".FragmentLearnActivity" />
         <activity android:name=".PagerLearnActivity" />
         <activity android:name=".MatrixLearnActivity" />
-        <activity android:name=".veex.VeexActivity"></activity>
+        <activity android:name=".veex.VeexActivity"/>
     </application>
 </manifest>
