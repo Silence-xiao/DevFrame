@@ -25,7 +25,7 @@ public class LogUtils {
      * @return
      */
     public static LogUtils getLog(String tag) {
-        return new LogUtils("hui-log" + tag);
+        return new LogUtils("hui-log:" + tag);
     }
 
     private LogUtils(String tag) {
