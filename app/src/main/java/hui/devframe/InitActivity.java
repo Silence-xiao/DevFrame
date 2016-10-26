@@ -67,12 +67,12 @@ public class InitActivity extends BaseActivity {
                 Picasso.with(InitActivity.this).load("http://pic77.nipic.com/file/20150907/7257561_095930209148_2.jpg").into(mImg, new Callback() {
                     @Override
                     public void onSuccess() {
-                        log.e("success");
+                        log.e("Picasso success");
                     }
 
                     @Override
                     public void onError() {
-                        log.e("error");
+                        log.e("Picasso error");
                     }
                 });
             }
