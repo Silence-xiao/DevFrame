@@ -77,6 +77,12 @@ public class InitActivity extends BaseActivity {
                 });
             }
         });
+        createButton("蓝牙笔测试", new ReturnCall() {
+            @Override
+            public void call() {
+
+            }
+        });
     }
 
     private void createButton(String text, final ReturnCall call) {
