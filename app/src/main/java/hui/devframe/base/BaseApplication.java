@@ -12,10 +12,13 @@ import hui.devframe.veex.ImageAdapter;
  * Created by wanghui on 16/6/12.
  */
 public class BaseApplication extends Application {
+    private static BaseApplication CONTEXT;
+
     @Override
     public void onCreate() {
         super.onCreate();
 
+        CONTEXT = this;
         // veex init
         WXSDKEngine.addCustomOptions("appName", "WXSample");
         WXSDKEngine.addCustomOptions("appGroup", "WXApp");
@@ -24,5 +27,9 @@ public class BaseApplication extends Application {
                         .setImgAdapter(new ImageAdapter())
                         .build()
         );
+    }
+
+    public static Application getApplication() {
+        return CONTEXT;
     }
 }

@@ -5,6 +5,10 @@ import android.content.Context;
 import android.graphics.Rect;
 import android.util.DisplayMetrics;
 import android.view.View;
+import android.view.WindowManager;
+
+import hui.devframe.base.BaseActivity;
+import hui.devframe.base.BaseApplication;
 
 public class ScreenUtil {
     private static int DPI_LEVEL = -1;
@@ -15,6 +19,11 @@ public class ScreenUtil {
 
     public static int dp2px(Context context, float dp) {
         final float scale = context.getApplicationContext().getResources().getDisplayMetrics().density;
+        return (int) (dp * scale + 0.5f);
+    }
+
+    public static int dp2px(float dp) {
+        final float scale = BaseApplication.getApplication().getResources().getDisplayMetrics().density;
         return (int) (dp * scale + 0.5f);
     }
 
@@ -71,9 +80,9 @@ public class ScreenUtil {
      *
      * @param
      */
-    public static int getScreenWidth(Activity activity) {
+    public static int getScreenWidth() {
         DisplayMetrics metrics = new DisplayMetrics();
-        activity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        ((WindowManager)BaseApplication.getApplication().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(metrics);
         return metrics.widthPixels;
     }
 
