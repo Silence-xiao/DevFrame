@@ -8,32 +8,25 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.util.ArrayList;
 
 import hui.devframe.R;
-import hui.devframe.util.ScreenUtil;
 
 public class DrawPadView extends View {
 
-    // 页码
-    public int mPageIndex;
-
     // 绘制图片
-    private Paint mBitmapPaint, mBitmapHalfPaint;
-    private Bitmap mPenBlackBitmap;
-    private Bitmap mPenRedBitmap;
-    private Bitmap mPenBlueBitmap;
-    private Bitmap mEraseBitmap;
+    private Paint mBitmapPaint;
+    private Bitmap mBackBitmap;
 
     // 绘制路径
     private Paint mPathPaint;
-    private Paint mTempPaint;
-    private PaintType mPaintType;
+    private Paint mCoverPaint;
 
     // 路径数据
     public SerializePath mPath;
@@ -50,41 +43,10 @@ public class DrawPadView extends View {
     private float mScaleX = 1.0f;
     private float mScaleY = 1.0f;
 
-    /**
-     * 设置页码
-     */
-    public void setPageIndex(int mIndex) {
-        mPageIndex = mIndex;
-    }
+    private boolean isCover = false;
 
-    /**
-     * 设置缩放比例
-     */
-    public void setScale(int teacherWidth, int teacherHeight, int studentWidth, int studentHeight) {
-        mScaleX = studentWidth * 1.0f / teacherWidth;
-        mScaleY = studentHeight * 1.0f / teacherHeight;
-    }
-
-    /**
-     * 设置画笔
-     */
-    public void setPaintPen(float width, PaintType type) {
-        mPaintType = type;
-        mPathPaint.setColor(type.color);
-        if (type == PaintType.Erase) {
-            mPathPaint.setStrokeWidth(ScreenUtil.getScreenWidth() > 1080 ? 40.0f :
-                    (ScreenUtil.getScreenWidth() >= 720 ? 20.0f : 10.0f));
-        } else {
-            mPathPaint.setStrokeWidth(ScreenUtil.getScreenWidth() > 720 ? 2.0f : 1.0f);
-        }
-    }
-
-    /**
-     * 设置不显示画笔
-     */
-    public void dismissPen() {
-        isShowPen = false;
-        postInvalidate();
+    public void setPenCover(boolean isCover) {
+        this.isCover = isCover;
     }
 
     /**
@@ -98,55 +60,12 @@ public class DrawPadView extends View {
     }
 
     /**
-     * 把画板保存到文件
-     */
-    public boolean save(File file) {
-        if (file == null) {
-            return false;
-        } else {
-            if (file.exists()) {
-                file.delete();
-            }
-
-            try {
-                long temp = System.currentTimeMillis();
-                if (!isDrawingCacheEnabled()) {
-                    setDrawingCacheEnabled(true);
-                }
-                destroyDrawingCache();
-                buildDrawingCache();
-                if (getDrawingCache() != null) {
-                    FileOutputStream out = new FileOutputStream(file);
-                    getDrawingCache().compress(Bitmap.CompressFormat.PNG, 70, out);
-                    out.close();
-                } else {
-                }
-                return true;
-            } catch (Exception e) {
-                return false;
-            }
-        }
-    }
-
-    /**
      * 清理资源
      */
     public void clear() {
-        if (mPenBlackBitmap != null) {
-            mPenBlackBitmap.recycle();
-            mPenBlackBitmap = null;
-        }
-        if (mEraseBitmap != null) {
-            mEraseBitmap.recycle();
-            mEraseBitmap = null;
-        }
-        if (mPenRedBitmap != null) {
-            mPenRedBitmap.recycle();
-            mPenRedBitmap = null;
-        }
-        if (mPenBlueBitmap != null) {
-            mPenBlueBitmap.recycle();
-            mPenBlueBitmap = null;
+        if (mBackBitmap != null) {
+            mBackBitmap.recycle();
+            mBackBitmap = null;
         }
         paths.clear();
     }
@@ -156,8 +75,6 @@ public class DrawPadView extends View {
 
         initialPaint();
         initialBitmap();
-
-        mPageIndex = 0;
     }
 
     private void initialPaint() {
@@ -168,38 +85,30 @@ public class DrawPadView extends View {
         mBitmapPaint.setStrokeJoin(Paint.Join.ROUND);
         mBitmapPaint.setStrokeCap(Paint.Cap.ROUND);
 
-        mBitmapHalfPaint = new Paint();
-        mBitmapHalfPaint.setAntiAlias(true);
-        mBitmapHalfPaint.setStyle(Style.FILL);
-        mBitmapHalfPaint.setStrokeJoin(Paint.Join.ROUND);
-        mBitmapHalfPaint.setStrokeCap(Paint.Cap.ROUND);
-        mBitmapHalfPaint.setColor(Color.BLUE);
-        mBitmapHalfPaint.setAlpha(0x30);
+        mCoverPaint = new Paint();
+        mCoverPaint.setAntiAlias(true);
+        mCoverPaint.setStyle(Style.FILL);
+        mCoverPaint.setStrokeJoin(Paint.Join.ROUND);
+        mCoverPaint.setStrokeCap(Paint.Cap.ROUND);
+        PorterDuffXfermode mode = new PorterDuffXfermode(PorterDuff.Mode.XOR);
+        mCoverPaint.setXfermode(mode);
+        mCoverPaint.setColor(Color.GRAY);
+        mCoverPaint.setStrokeWidth(5);
 
         mPathPaint = new Paint();
         mPathPaint.setAntiAlias(true);
         mPathPaint.setStrokeCap(Paint.Cap.ROUND);
         mPathPaint.setStrokeJoin(Paint.Join.ROUND);
         mPathPaint.setStyle(Style.STROKE);
-
-        mTempPaint = new Paint();
-        mTempPaint.setAntiAlias(true);
-        mTempPaint.setStrokeCap(Paint.Cap.ROUND);
-        mTempPaint.setStrokeJoin(Paint.Join.ROUND);
-        mTempPaint.setStyle(Style.STROKE);
+        mPathPaint.setColor(Color.parseColor("#000000"));
+        mPathPaint.setStrokeWidth(5);
 
         setDrawingCacheEnabled(true);
         mPath = new SerializePath();
-        mPaintType = PaintType.Black;
     }
 
     private void initialBitmap() {
-        int width = ScreenUtil.dp2px(11);
-        int height = ScreenUtil.dp2px(11);
-        mEraseBitmap = createSizeImage(BitmapFactory.decodeResource(getResources(), R.drawable.canvas_view_earse_bg), ScreenUtil.dp2px(15), ScreenUtil.dp2px(14));
-        mPenBlackBitmap = createSizeImage(BitmapFactory.decodeResource(getResources(), R.drawable.canvas_view_pen_bg), width, height);
-        mPenRedBitmap = createSizeImage(BitmapFactory.decodeResource(getResources(), R.drawable.canvas_view_pen_red_bg), width, height);
-        mPenBlueBitmap = createSizeImage(BitmapFactory.decodeResource(getResources(), R.drawable.canvas_view_pen_blue_bg), width, height);
+        mBackBitmap = createSizeImage(BitmapFactory.decodeResource(getResources(), R.drawable.test_big), 1080, 1080);
     }
 
     private Bitmap createSizeImage(Bitmap bitmap, int newWidth, int newHeight) {
@@ -222,48 +131,28 @@ public class DrawPadView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
+        canvas.drawBitmap(mBackBitmap, 0, 0, mPathPaint);
         // 绘制笔迹
         for (PathObject p : paths) {
             if (!p.path.actions.isEmpty()) {
-                mTempPaint.setColor(p.painttype.color);
-                mTempPaint.setStrokeWidth(p.strokeWidth);
-                canvas.drawPath(p.path, mTempPaint);
+                if (p.isCover) {
+                    canvas.drawPath(p.path, mCoverPaint);
+                } else {
+                    canvas.drawPath(p.path, mPathPaint);
+                }
             }
         }
-        canvas.drawPath(mPath, mPathPaint);
-
-        // 绘制画笔
-        if (!isShowPen) {
-            return;
-        }
-        switch (mPaintType) {
-            case Erase:
-                if (mEraseBitmap != null && !mEraseBitmap.isRecycled()) {
-                    canvas.drawBitmap(mEraseBitmap, mLastX - 10, mLastY - 10, mBitmapPaint);
-                }
-                break;
-            case Black:
-                if (mPenBlackBitmap != null && !mPenBlackBitmap.isRecycled()) {
-                    canvas.drawBitmap(mPenBlackBitmap, mLastX - 2, mLastY - mPenBlackBitmap.getHeight(), !isDown ? mBitmapHalfPaint : mBitmapPaint);
-                }
-                break;
-            case Red:
-                if (mPenRedBitmap != null && !mPenRedBitmap.isRecycled()) {
-                    canvas.drawBitmap(mPenRedBitmap, mLastX - 2, mLastY - mPenRedBitmap.getHeight(), !isDown ? mBitmapHalfPaint : mBitmapPaint);
-                }
-                break;
-            case Blue:
-                if (mPenBlueBitmap != null && !mPenBlueBitmap.isRecycled()) {
-                    canvas.drawBitmap(mPenBlueBitmap, mLastX - 2, mLastY - mPenBlueBitmap.getHeight(), !isDown ? mBitmapHalfPaint : mBitmapPaint);
-                break;
-            }
+        if (isCover) {
+            canvas.drawPath(mPath, mCoverPaint);
+        } else {
+            canvas.drawPath(mPath, mPathPaint);
         }
     }
 
     /**
      * 开始绘制路径
      */
-    public void startDraw(int x, int y, boolean invalidate) {
+    public void startDraw(int x, int y) {
         float new_x = x * mScaleX;
         float new_y = y * mScaleY;
 
@@ -273,15 +162,13 @@ public class DrawPadView extends View {
         mLastX = new_x;
         mLastY = new_y;
         isShowPen = true;
-        if (invalidate) {
-            postInvalidate();
-        }
+        postInvalidate();
     }
 
     /**
      * 移动绘制路径
      */
-    public void moveDraw(int x, int y, boolean invalidate) {
+    public void moveDraw(int x, int y) {
         float new_x = x * mScaleX;
         float new_y = y * mScaleY;
 
@@ -301,86 +188,56 @@ public class DrawPadView extends View {
             mLastY = new_y;
         }
         isShowPen = true;
-        if (invalidate) {
-            postInvalidate();
-        }
+        postInvalidate();
     }
 
     /**
      * 路径绘制结束
      */
-    public void upDraw(float x, float y, boolean invalidate) {
-        upDraw(x, y, true, invalidate);
-    }
-
-    /**
-     * 用最后的点结束绘制
-     */
-    public void upDraw(boolean invalidate) {
-        paths.add(new PathObject(mPath, mPaintType, mPathPaint.getStrokeWidth()));
-        mPath = new SerializePath();
-        mPath.moveTo(mLastX, mLastX);
-        isDown = false;
-        isShowPen = false;
-    }
-
-    /**
-     * 路径绘制结束
-     */
-    public void upDraw(float x, float y, boolean lineto, boolean invalidate) {
+    public void upDraw(float x, float y) {
         if (!isDown) {
             return;
         }
         float new_x = x * mScaleX;
         float new_y = y * mScaleY;
-        if (lineto) {
-            mPath.lineTo(new_x, new_y);
-        }
+        mPath.lineTo(new_x, new_y);
         mLastX = new_x;
         mLastY = new_y;
-        paths.add(new PathObject(mPath, mPaintType, mPathPaint.getStrokeWidth()));
+        paths.add(new PathObject(mPath, isCover, mPathPaint.getStrokeWidth()));
 
         mPath = new SerializePath();
         mPath.moveTo(new_x, new_y);
         isDown = false;
         isShowPen = false;
-        if (invalidate) {
-            postInvalidate();
-        }
+        postInvalidate();
     }
 
     // 笔迹对象
     class PathObject {
         SerializePath path;
-        PaintType painttype;
+        boolean isCover;
         float strokeWidth;
 
-        public PathObject(SerializePath path, PaintType painttype, float strokeWidth) {
+        public PathObject(SerializePath path, boolean isCover, float strokeWidth) {
             this.path = path;
-            this.painttype = painttype;
+            this.isCover = isCover;
             this.strokeWidth = strokeWidth;
         }
     }
 
-    // 绘图类型
-    public enum PaintType {
-        Erase(0, Color.parseColor("#ffffff")), Black(1, Color.parseColor("#000000")), Red(2, Color.parseColor("#ff0000")), Blue(3, Color.parseColor("#0077FF"));
-
-        private int index;
-        private int color;
-
-        PaintType(int index, int color) {
-            this.index = index;
-            this.color = color;
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                startDraw((int) event.getX(), (int) event.getY());
+                break;
+            case MotionEvent.ACTION_MOVE:
+                moveDraw((int) event.getX(), (int) event.getY());
+                break;
+            case MotionEvent.ACTION_UP:
+                upDraw((int) event.getX(), (int) event.getY());
+                break;
         }
-
-        public static PaintType getPaintType(int index) {
-            for (PaintType t : PaintType.values()) {
-                if (t.index == index) {
-                    return t;
-                }
-            }
-            return null;
-        }
+        return true;
     }
 }

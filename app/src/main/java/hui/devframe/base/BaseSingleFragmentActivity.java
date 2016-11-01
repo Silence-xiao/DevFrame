@@ -21,8 +21,6 @@ public abstract class BaseSingleFragmentActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.base_single_fragment_activity);
-
         FragmentManager fm = getSupportFragmentManager();
         singleFragment = fm.findFragmentById(R.id.fragment_container);
 
@@ -32,5 +30,10 @@ public abstract class BaseSingleFragmentActivity extends BaseActivity {
             ft.replace(R.id.fragment_container, singleFragment);
             ft.commit();
         }
+    }
+
+    @Override
+    protected int getContentLayoutId() {
+        return R.layout.base_single_fragment_activity;
     }
 }

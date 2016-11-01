@@ -24,10 +24,13 @@ public class InitActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.init_activity);
-
         initButtons();
         initView();
+    }
+
+    @Override
+    protected int getContentLayoutId() {
+        return R.layout.init_activity;
     }
 
     private void initView() {
@@ -77,10 +80,10 @@ public class InitActivity extends BaseActivity {
                 });
             }
         });
-        createButton("蓝牙笔测试", new ReturnCall() {
+        createButton("draw", new ReturnCall() {
             @Override
             public void call() {
-
+                startActivity(new Intent(InitActivity.this, DrawActivity.class));
             }
         });
     }
