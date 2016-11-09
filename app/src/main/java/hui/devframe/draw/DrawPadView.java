@@ -20,13 +20,18 @@ import hui.devframe.R;
 
 public class DrawPadView extends View {
 
-    // 绘制图片
-    private Paint mBitmapPaint;
-    private Bitmap mBackBitmap;
+    private int width;
+    private int height;
 
-    // 绘制路径
+    private Bitmap mBackBitmap;
+    private Bitmap mDrawBitmap;
+
+    private Paint mBitmapPaint;
     private Paint mPathPaint;
     private Paint mCoverPaint;
+
+    private Canvas mCanvas;
+    private Matrix matrix;
 
     // 路径数据
     public SerializePath mPath;
@@ -34,29 +39,14 @@ public class DrawPadView extends View {
 
     // 是否在写
     public boolean isDown = false;
-    // 是否显示画笔
-    private boolean isShowPen = false;
     // 上一次绘制位置
     private float mLastX;
     private float mLastY;
-    // 缩放比例
-    private float mScaleX = 1.0f;
-    private float mScaleY = 1.0f;
 
     private boolean isCover = false;
 
     public void setPenCover(boolean isCover) {
         this.isCover = isCover;
-    }
-
-    /**
-     * 清除内容
-     */
-    public void resetCanvas() {
-        paths.clear();
-        mPath = new SerializePath();
-        postInvalidate();
-        isDown = false;
     }
 
     /**
@@ -73,11 +63,6 @@ public class DrawPadView extends View {
     public DrawPadView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        initialPaint();
-        initialBitmap();
-    }
-
-    private void initialPaint() {
         // 设置笔画刷参数
         mBitmapPaint = new Paint();
         mBitmapPaint.setAntiAlias(true);
@@ -92,60 +77,60 @@ public class DrawPadView extends View {
         mCoverPaint.setStrokeCap(Paint.Cap.ROUND);
         PorterDuffXfermode mode = new PorterDuffXfermode(PorterDuff.Mode.XOR);
         mCoverPaint.setXfermode(mode);
-        mCoverPaint.setColor(Color.GRAY);
-        mCoverPaint.setStrokeWidth(5);
+        mCoverPaint.setColor(Color.BLACK);
+        mCoverPaint.setStrokeWidth(15);
 
         mPathPaint = new Paint();
         mPathPaint.setAntiAlias(true);
         mPathPaint.setStrokeCap(Paint.Cap.ROUND);
         mPathPaint.setStrokeJoin(Paint.Join.ROUND);
         mPathPaint.setStyle(Style.STROKE);
-        mPathPaint.setColor(Color.parseColor("#000000"));
-        mPathPaint.setStrokeWidth(5);
+        mPathPaint.setColor(Color.BLACK);
+        mPathPaint.setStrokeWidth(15);
 
         setDrawingCacheEnabled(true);
+        mBackBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.test_big);
+        matrix = new Matrix();
+
         mPath = new SerializePath();
     }
 
-    private void initialBitmap() {
-        mBackBitmap = createSizeImage(BitmapFactory.decodeResource(getResources(), R.drawable.test_big), 1080, 1080);
-    }
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
-    private Bitmap createSizeImage(Bitmap bitmap, int newWidth, int newHeight) {
-        int width = bitmap.getWidth();
-        int height = bitmap.getHeight();
-        if (width == newWidth && height == newHeight) {
-            return bitmap;
-        } else {
-            float scaleWidth = ((float) newWidth) / width;
-            float scaleHeight = ((float) newHeight) / height;
+        width = getDefaultSize(getSuggestedMinimumWidth(), widthMeasureSpec);
+        height = getDefaultSize(getSuggestedMinimumHeight(), heightMeasureSpec);
+        setMeasuredDimension(width, height);
 
-            Matrix matrix = new Matrix();
-            matrix.postScale(scaleWidth, scaleHeight);
-            return Bitmap.createBitmap(bitmap, 0, 0, width, height,
-                    matrix, true);
-        }
+        mDrawBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        mCanvas = new Canvas(mDrawBitmap);
+
+        matrix.reset();
+        matrix.postScale((float) width / mBackBitmap.getWidth(), (float) height / mBackBitmap.getHeight());
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        canvas.drawBitmap(mBackBitmap, 0, 0, mPathPaint);
+        canvas.drawBitmap(mBackBitmap,matrix,null);
+        canvas.drawBitmap(mDrawBitmap, 0, 0, mPathPaint);
+
         // 绘制笔迹
         for (PathObject p : paths) {
             if (!p.path.actions.isEmpty()) {
                 if (p.isCover) {
-                    canvas.drawPath(p.path, mCoverPaint);
+                    mCanvas.drawPath(p.path, mCoverPaint);
                 } else {
-                    canvas.drawPath(p.path, mPathPaint);
+                    mCanvas.drawPath(p.path, mPathPaint);
                 }
             }
         }
         if (isCover) {
-            canvas.drawPath(mPath, mCoverPaint);
+            mCanvas.drawPath(mPath, mCoverPaint);
         } else {
-            canvas.drawPath(mPath, mPathPaint);
+            mCanvas.drawPath(mPath, mPathPaint);
         }
     }
 
@@ -153,15 +138,11 @@ public class DrawPadView extends View {
      * 开始绘制路径
      */
     public void startDraw(int x, int y) {
-        float new_x = x * mScaleX;
-        float new_y = y * mScaleY;
-
         isDown = true;
         mPath.reset();
-        mPath.moveTo(new_x, new_y);
-        mLastX = new_x;
-        mLastY = new_y;
-        isShowPen = true;
+        mPath.moveTo(x, y);
+        mLastX = x;
+        mLastY = y;
         postInvalidate();
     }
 
@@ -169,37 +150,31 @@ public class DrawPadView extends View {
      * 移动绘制路径
      */
     public void moveDraw(int x, int y) {
-        float new_x = x * mScaleX;
-        float new_y = y * mScaleY;
-
         // 如果未开始则自动开始绘制
         if (!isDown) {
             isDown = true;
-            mPath.moveTo(new_x, new_y);
+            mPath.moveTo(x, y);
         }
 
-        float dx = Math.abs(new_x - mLastX);
-        float dy = Math.abs(new_y - mLastY);
+        float dx = Math.abs(x - mLastX);
+        float dy = Math.abs(y - mLastY);
 
         if (dx >= 2 || dy >= 2) {
             mPath.quadTo(mLastX, mLastY,
-                    (new_x + mLastX) / 2, (new_y + mLastY) / 2);
-            mLastX = new_x;
-            mLastY = new_y;
+                    (x + mLastX) / 2, (y + mLastY) / 2);
+            mLastX = x;
+            mLastY = y;
         }
-        isShowPen = true;
         postInvalidate();
     }
 
     /**
      * 路径绘制结束
      */
-    public void upDraw(float x, float y) {
+    public void upDraw(float new_x, float new_y) {
         if (!isDown) {
             return;
         }
-        float new_x = x * mScaleX;
-        float new_y = y * mScaleY;
         mPath.lineTo(new_x, new_y);
         mLastX = new_x;
         mLastY = new_y;
@@ -208,7 +183,6 @@ public class DrawPadView extends View {
         mPath = new SerializePath();
         mPath.moveTo(new_x, new_y);
         isDown = false;
-        isShowPen = false;
         postInvalidate();
     }
 
