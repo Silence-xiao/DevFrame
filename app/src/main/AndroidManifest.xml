@@ -27,5 +27,6 @@
         <activity android:name=".MatrixLearnActivity" />
         <activity android:name=".veex.VeexActivity" />
         <activity android:name=".DrawActivity" />
+        <activity android:name=".MyDrawActivity" />
     </application>
 </manifest>

@@ -5,21 +5,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <hui.devframe.draw.DrawPadView
-        android:id="@+id/draw_pad_view"
+    <hui.devframe.draw.MyBitmapViewAnother
         android:layout_width="match_parent"
-        android:layout_height="400dp"
-        tools:visibility="visible" />
-
-    <Button
-        android:id="@+id/draw_pad_cover"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="橡皮"/>
-
-    <Button
-        android:id="@+id/draw_pad_pen"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="画笔"/>
+        android:layout_height="0dp"
+        android:layout_weight="1" />
 </LinearLayout>
