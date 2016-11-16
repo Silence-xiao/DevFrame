@@ -89,7 +89,7 @@ public class InitActivity extends BaseActivity {
         createButton("my draw", new ReturnCall() {
             @Override
             public void call() {
-                startActivity(new Intent(InitActivity.this, DrawActivity.class));
+                startActivity(new Intent(InitActivity.this, MyDrawActivity.class));
             }
         });
     }

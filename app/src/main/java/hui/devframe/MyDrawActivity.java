@@ -9,7 +9,7 @@ import hui.devframe.draw.DrawPadView;
 
 public class MyDrawActivity extends BaseActivity {
 
-    private DrawPadView mPad;
+    private DrawPadView mDrawView;
     private Button mCover;
     private Button mPen;
 
@@ -21,17 +21,20 @@ public class MyDrawActivity extends BaseActivity {
     }
 
     private void initView() {
+        mDrawView = (DrawPadView) findViewById(R.id.draw_pad_view);
         mCover = (Button) findViewById(R.id.draw_pad_cover);
         mPen = (Button) findViewById(R.id.draw_pad_pen);
 
         mCover.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mDrawView.setPenCover(true);
             }
         });
         mPen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mDrawView.setPenCover(false);
             }
         });
     }

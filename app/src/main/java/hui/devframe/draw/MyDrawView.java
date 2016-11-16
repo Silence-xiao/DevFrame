@@ -23,6 +23,7 @@ import hui.devframe.util.ScreenUtil;
 
 public class MyDrawView extends View {
 
+    private final Paint mPaintCover;
     private Paint mBitmapPaint;
     private Paint mPathPaint;
 
@@ -30,6 +31,7 @@ public class MyDrawView extends View {
     private float mLastY;
 
     private RectF rect;
+    private boolean isPen = true;
 
     public MyDrawView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -50,6 +52,20 @@ public class MyDrawView extends View {
         mPathPaint.setColor(Color.BLACK);
         mPathPaint.setStrokeWidth(ScreenUtil.dp2px(getContext(), 4));
 
+
+        mPaintCover = new Paint();
+        mPaintCover.setAntiAlias(true);
+        mPaintCover.setColor(Color.GRAY);
+        mPaintCover.setStrokeWidth(50);
+        //设置图形混合方式，这里使用PorterDuff.Mode.XOR模式，与底层重叠部分设为透明
+        PorterDuffXfermode mode = new PorterDuffXfermode(PorterDuff.Mode.XOR);
+        mPaintCover.setXfermode(mode);
+        mPaintCover.setStyle(Paint.Style.STROKE);
+        //设置笔刷的样式，默认为BUTT，如果设置为ROUND(圆形),SQUARE(方形)，需要将填充类型Style设置为STROKE或者FILL_AND_STROKE
+        mPaintCover.setStrokeCap(Paint.Cap.ROUND);
+        //设置画笔的结合方式
+        mPaintCover.setStrokeJoin(Paint.Join.ROUND);
+
         setDrawingCacheEnabled(true);
         rect = new RectF();
     }
@@ -62,15 +78,33 @@ public class MyDrawView extends View {
         canvas.drawRoundRect(rect, ScreenUtil.dp2px(getContext(), 10), ScreenUtil.dp2px(getContext(), 10), mPathPaint);
     }
 
+    public void setPen(boolean isPen) {
+        this.isPen = isPen;
+    }
+
+    private void down(float x, float y) {
+
+    }
+
+    private void move(float x, float y) {
+
+    }
+
+    private void up(float x, float y) {
+
+    }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
+                down(event.getX(), event.getY());
                 break;
             case MotionEvent.ACTION_MOVE:
+                move(event.getX(), event.getY());
                 break;
             case MotionEvent.ACTION_UP:
+                up(event.getX(), event.getY());
                 break;
         }
         return false;

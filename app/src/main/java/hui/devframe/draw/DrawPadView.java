@@ -49,17 +49,6 @@ public class DrawPadView extends View {
         this.isCover = isCover;
     }
 
-    /**
-     * 清理资源
-     */
-    public void clear() {
-        if (mBackBitmap != null) {
-            mBackBitmap.recycle();
-            mBackBitmap = null;
-        }
-        paths.clear();
-    }
-
     public DrawPadView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
@@ -72,21 +61,19 @@ public class DrawPadView extends View {
 
         mCoverPaint = new Paint();
         mCoverPaint.setAntiAlias(true);
-        mCoverPaint.setStyle(Style.FILL);
+        mCoverPaint.setStyle(Style.STROKE);
         mCoverPaint.setStrokeJoin(Paint.Join.ROUND);
         mCoverPaint.setStrokeCap(Paint.Cap.ROUND);
-        PorterDuffXfermode mode = new PorterDuffXfermode(PorterDuff.Mode.XOR);
+        PorterDuffXfermode mode = new PorterDuffXfermode(PorterDuff.Mode.CLEAR);
         mCoverPaint.setXfermode(mode);
-        mCoverPaint.setColor(Color.BLACK);
-        mCoverPaint.setStrokeWidth(15);
+        mCoverPaint.setColor(Color.GRAY);
+        mCoverPaint.setStrokeWidth(50);
 
         mPathPaint = new Paint();
         mPathPaint.setAntiAlias(true);
-        mPathPaint.setStrokeCap(Paint.Cap.ROUND);
-        mPathPaint.setStrokeJoin(Paint.Join.ROUND);
         mPathPaint.setStyle(Style.STROKE);
         mPathPaint.setColor(Color.BLACK);
-        mPathPaint.setStrokeWidth(15);
+        mPathPaint.setStrokeWidth(50);
 
         setDrawingCacheEnabled(true);
         mBackBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.test_big);

@@ -48,8 +48,9 @@ public class MyBitmapViewAnother extends View {
         mPaintCover.setAntiAlias(true);
         mPaintCover.setColor(Color.GRAY);
         mPaintCover.setStrokeWidth(50);
+        mPaintCover.setAlpha(0);
         //设置图形混合方式，这里使用PorterDuff.Mode.XOR模式，与底层重叠部分设为透明
-        PorterDuffXfermode mode = new PorterDuffXfermode(PorterDuff.Mode.XOR);
+        PorterDuffXfermode mode = new PorterDuffXfermode(PorterDuff.Mode.SRC_IN);
         mPaintCover.setXfermode(mode);
         mPaintCover.setStyle(Paint.Style.STROKE);
         //设置笔刷的样式，默认为BUTT，如果设置为ROUND(圆形),SQUARE(方形)，需要将填充类型Style设置为STROKE或者FILL_AND_STROKE
