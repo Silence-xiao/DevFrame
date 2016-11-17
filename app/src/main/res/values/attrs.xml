@@ -10,4 +10,8 @@
     <declare-styleable name="wave">
         <attr name="dynamicHeight" format="dimension" />
     </declare-styleable>
+
+    <declare-styleable name="rect_indicator">
+        <attr name="rect_fore" format="color" />
+    </declare-styleable>
 </resources>

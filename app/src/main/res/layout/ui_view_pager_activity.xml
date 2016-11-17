@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:auto="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:auto="http://schemas.android.com/apk/res-auto"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="hui.devframe.PagerLearnActivity">
+
     <android.support.v4.view.ViewPager
         android:id="@+id/init_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <hui.devframe.view.PagerIndicator
+    <hui.devframe.view.RectIndicatorView
         android:id="@+id/init_indicator"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="50dp"
-        auto:dot_back="@color/gray_8f"
-        auto:dot_fore="@color/white"
-        auto:dot_size="4"
-        auto:dot_space="8"/>
+        android:layout_marginBottom="50dp" />
+
+    <hui.devframe.view.RectPagerIndicator
+        android:id="@+id/init_indicator2"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="150dp"
+        auto:rect_fore="@color/blue" />
 </RelativeLayout>
