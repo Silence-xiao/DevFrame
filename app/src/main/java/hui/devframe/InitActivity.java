@@ -92,6 +92,12 @@ public class InitActivity extends BaseActivity {
                 startActivity(new Intent(InitActivity.this, MyDrawActivity.class));
             }
         });
+        createButton("scroll", new ReturnCall() {
+            @Override
+            public void call() {
+                startActivity(new Intent(InitActivity.this, ScrollLearnActivity.class));
+            }
+        });
     }
 
     private void createButton(String text, final ReturnCall call) {

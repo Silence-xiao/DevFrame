@@ -26,7 +26,10 @@
         <activity android:name=".PagerLearnActivity" />
         <activity android:name=".MatrixLearnActivity" />
         <activity android:name=".veex.VeexActivity" />
-        <activity android:name=".DrawActivity" />
-        <activity android:name=".MyDrawActivity" />
+        <activity android:name=".DrawActivity"
+            android:hardwareAccelerated="false" android:theme="@style/TranslucentTheme"/>
+        <activity android:name=".MyDrawActivity"
+            android:hardwareAccelerated="false"/>
+        <activity android:name=".ScrollLearnActivity" />
     </application>
 </manifest>

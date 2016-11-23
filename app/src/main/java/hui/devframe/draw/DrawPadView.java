@@ -8,9 +8,11 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
+import android.graphics.PaintFlagsDrawFilter;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -52,6 +54,9 @@ public class DrawPadView extends View {
     public DrawPadView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
+        setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+
+
         // 设置笔画刷参数
         mBitmapPaint = new Paint();
         mBitmapPaint.setAntiAlias(true);
@@ -67,17 +72,25 @@ public class DrawPadView extends View {
         PorterDuffXfermode mode = new PorterDuffXfermode(PorterDuff.Mode.CLEAR);
         mCoverPaint.setXfermode(mode);
         mCoverPaint.setColor(Color.GRAY);
-        mCoverPaint.setStrokeWidth(50);
+        mCoverPaint.setStrokeWidth(3);
 
         mPathPaint = new Paint();
         mPathPaint.setAntiAlias(true);
         mPathPaint.setStyle(Style.STROKE);
         mPathPaint.setColor(Color.BLACK);
-        mPathPaint.setStrokeWidth(50);
+        mPathPaint.setStrokeWidth(3);
+        mPathPaint.setTextSize(85);
 
         setDrawingCacheEnabled(true);
         mBackBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.test_big);
         matrix = new Matrix();
+
+        mDrawBitmap = Bitmap.createBitmap(1080, 1200, Bitmap.Config.ARGB_8888);
+        mCanvas = new Canvas(mDrawBitmap);
+        mCanvas.setDrawFilter(new PaintFlagsDrawFilter(0, Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG));
+
+        Log.e("eeeeeeeeeeeee",isHardwareAccelerated() + "");
+        Log.e("eeeeeeeeeeeee",mCanvas.isHardwareAccelerated() + "");
 
         mPath = new SerializePath();
     }
@@ -90,9 +103,6 @@ public class DrawPadView extends View {
         height = getDefaultSize(getSuggestedMinimumHeight(), heightMeasureSpec);
         setMeasuredDimension(width, height);
 
-        mDrawBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-        mCanvas = new Canvas(mDrawBitmap);
-
         matrix.reset();
         matrix.postScale((float) width / mBackBitmap.getWidth(), (float) height / mBackBitmap.getHeight());
     }
@@ -103,6 +113,12 @@ public class DrawPadView extends View {
 
         canvas.drawBitmap(mBackBitmap,matrix,null);
         canvas.drawBitmap(mDrawBitmap, 0, 0, mPathPaint);
+
+        canvas.drawCircle(300, 300, 100, mPathPaint);
+        mCanvas.drawCircle(450, 300, 100, mPathPaint);
+
+        canvas.drawText("这是测试文字",300, 600, mPathPaint);
+        mCanvas.drawText("这是测试文字",300, 800, mPathPaint);
 
         // 绘制笔迹
         for (PathObject p : paths) {
