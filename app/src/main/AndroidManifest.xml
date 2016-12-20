@@ -22,14 +22,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".FragmentLearnActivity" />
-        <activity android:name=".PagerLearnActivity" />
-        <activity android:name=".MatrixLearnActivity" />
+        <activity android:name=".entry.FragmentLearnActivity" />
+        <activity android:name=".entry.PagerLearnActivity" />
+        <activity android:name=".entry.MatrixLearnActivity" />
         <activity android:name=".veex.VeexActivity" />
         <activity android:name=".DrawActivity"
-            android:hardwareAccelerated="false" android:theme="@style/TranslucentTheme"/>
-        <activity android:name=".MyDrawActivity"
-            android:hardwareAccelerated="false"/>
-        <activity android:name=".ScrollLearnActivity" />
+            android:hardwareAccelerated="false" />
+        <activity android:name=".MyDrawActivity" />
+        <activity android:name=".entry.ScrollLearnActivity" />
     </application>
 </manifest>

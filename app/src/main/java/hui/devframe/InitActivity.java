@@ -11,6 +11,10 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import hui.devframe.base.BaseActivity;
+import hui.devframe.entry.FragmentLearnActivity;
+import hui.devframe.entry.MatrixLearnActivity;
+import hui.devframe.entry.PagerLearnActivity;
+import hui.devframe.entry.ScrollLearnActivity;
 import hui.devframe.util.LogUtils;
 import hui.devframe.util.ReturnCall;
 import hui.devframe.veex.VeexActivity;

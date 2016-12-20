@@ -44,10 +44,12 @@ public class MyBitmapViewAnother extends View {
         //设置背景
         mBitmapBackground = BitmapFactory.decodeResource(getResources(), R.drawable.test_big);
 
+        setBackgroundColor(Color.TRANSPARENT);
+
         mPaintCover = new Paint();
         mPaintCover.setAntiAlias(true);
         mPaintCover.setColor(Color.GRAY);
-        mPaintCover.setStrokeWidth(50);
+        mPaintCover.setStrokeWidth(2);
         mPaintCover.setAlpha(0);
         //设置图形混合方式，这里使用PorterDuff.Mode.XOR模式，与底层重叠部分设为透明
         PorterDuffXfermode mode = new PorterDuffXfermode(PorterDuff.Mode.SRC_IN);

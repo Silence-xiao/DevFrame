@@ -1,4 +1,4 @@
-package hui.devframe;
+package hui.devframe.entry;
 
 import android.app.Activity;
 import android.content.Context;
@@ -14,6 +14,8 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.View.OnTouchListener;
 import android.widget.ImageView;
+
+import hui.devframe.R;
 
 public class MatrixLearnActivity extends Activity
         implements

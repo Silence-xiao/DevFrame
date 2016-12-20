@@ -54,8 +54,6 @@ public class DrawPadView extends View {
     public DrawPadView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-
 
         // 设置笔画刷参数
         mBitmapPaint = new Paint();
@@ -111,7 +109,7 @@ public class DrawPadView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        canvas.drawBitmap(mBackBitmap,matrix,null);
+        //canvas.drawBitmap(mBackBitmap,matrix,null);
         canvas.drawBitmap(mDrawBitmap, 0, 0, mPathPaint);
 
         canvas.drawCircle(300, 300, 100, mPathPaint);

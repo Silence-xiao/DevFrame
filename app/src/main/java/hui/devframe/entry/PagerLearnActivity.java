@@ -1,4 +1,4 @@
-package hui.devframe;
+package hui.devframe.entry;
 
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
@@ -9,6 +9,7 @@ import android.view.View;
 import java.util.ArrayList;
 import java.util.List;
 
+import hui.devframe.R;
 import hui.devframe.adapter.SimplePagerAdapter;
 import hui.devframe.view.RectIndicatorView;
 import hui.devframe.view.RectPagerIndicator;
