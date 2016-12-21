@@ -68,26 +68,32 @@ public class InitActivity extends BaseActivity {
                 startActivity(new Intent(InitActivity.this, VeexActivity.class));
             }
         });
-        createButton("Picasso测试", new ReturnCall() {
+//        createButton("Picasso测试", new ReturnCall() {
+//            @Override
+//            public void call() {
+//                Picasso.with(InitActivity.this).load("http://pic77.nipic.com/file/20150907/7257561_095930209148_2.jpg").into(mImg, new Callback() {
+//                    @Override
+//                    public void onSuccess() {
+//                        log.e("Picasso success");
+//                    }
+//
+//                    @Override
+//                    public void onError() {
+//                        log.e("Picasso error");
+//                    }
+//                });
+//            }
+//        });
+        createButton("draw", new ReturnCall() {
             @Override
             public void call() {
-                Picasso.with(InitActivity.this).load("http://pic77.nipic.com/file/20150907/7257561_095930209148_2.jpg").into(mImg, new Callback() {
-                    @Override
-                    public void onSuccess() {
-                        log.e("Picasso success");
-                    }
-
-                    @Override
-                    public void onError() {
-                        log.e("Picasso error");
-                    }
-                });
+                startActivity(new Intent(InitActivity.this, Xfermodes.class));
             }
         });
         createButton("draw", new ReturnCall() {
             @Override
             public void call() {
-                startActivity(new Intent(InitActivity.this, DrawActivity.class));
+                startActivity(new Intent(InitActivity.this, Xfermodes.class));
             }
         });
         createButton("my draw", new ReturnCall() {

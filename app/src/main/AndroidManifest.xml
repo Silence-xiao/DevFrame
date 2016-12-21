@@ -30,5 +30,11 @@
             android:hardwareAccelerated="false" />
         <activity android:name=".MyDrawActivity" />
         <activity android:name=".entry.ScrollLearnActivity" />
+        <activity android:name=".Xfermodes">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.SAMPLE_CODE" />
+            </intent-filter>
+        </activity>
     </application>
 </manifest>
