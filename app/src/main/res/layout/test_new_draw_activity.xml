@@ -6,7 +6,7 @@
     android:background="@drawable/test_big"
     android:orientation="vertical">
 
-    <hui.devframe.draw.DrawTestView
+    <hui.devframe.draw.DrawPadView
         android:id="@+id/draw_pad_view"
         android:layout_width="match_parent"
         android:layout_height="400dp"

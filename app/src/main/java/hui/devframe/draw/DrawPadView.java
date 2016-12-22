@@ -22,18 +22,8 @@ import hui.devframe.R;
 
 public class DrawPadView extends View {
 
-    private int width;
-    private int height;
-
-    private Bitmap mBackBitmap;
-    private Bitmap mDrawBitmap;
-
-    private Paint mBitmapPaint;
     private Paint mPathPaint;
     private Paint mCoverPaint;
-
-    private Canvas mCanvas;
-    private Matrix matrix;
 
     // 路径数据
     public SerializePath mPath;
@@ -54,85 +44,50 @@ public class DrawPadView extends View {
     public DrawPadView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-
-        // 设置笔画刷参数
-        mBitmapPaint = new Paint();
-        mBitmapPaint.setAntiAlias(true);
-        mBitmapPaint.setStyle(Style.FILL);
-        mBitmapPaint.setStrokeJoin(Paint.Join.ROUND);
-        mBitmapPaint.setStrokeCap(Paint.Cap.ROUND);
-
         mCoverPaint = new Paint();
         mCoverPaint.setAntiAlias(true);
         mCoverPaint.setStyle(Style.STROKE);
-        mCoverPaint.setStrokeJoin(Paint.Join.ROUND);
-        mCoverPaint.setStrokeCap(Paint.Cap.ROUND);
+        mCoverPaint.setStrokeWidth(10);
         PorterDuffXfermode mode = new PorterDuffXfermode(PorterDuff.Mode.CLEAR);
         mCoverPaint.setXfermode(mode);
-        mCoverPaint.setColor(Color.GRAY);
-        mCoverPaint.setStrokeWidth(3);
+        mCoverPaint.setFilterBitmap(false);
 
         mPathPaint = new Paint();
         mPathPaint.setAntiAlias(true);
         mPathPaint.setStyle(Style.STROKE);
-        mPathPaint.setColor(Color.BLACK);
-        mPathPaint.setStrokeWidth(3);
-        mPathPaint.setTextSize(85);
+        mPathPaint.setStrokeWidth(10);
+        mPathPaint.setFilterBitmap(false);
 
         setDrawingCacheEnabled(true);
-        mBackBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.test_big);
-        matrix = new Matrix();
-
-        mDrawBitmap = Bitmap.createBitmap(1080, 1200, Bitmap.Config.ARGB_8888);
-        mCanvas = new Canvas(mDrawBitmap);
-        mCanvas.setDrawFilter(new PaintFlagsDrawFilter(0, Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG));
-
-        Log.e("eeeeeeeeeeeee",isHardwareAccelerated() + "");
-        Log.e("eeeeeeeeeeeee",mCanvas.isHardwareAccelerated() + "");
 
         mPath = new SerializePath();
-    }
-
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-
-        width = getDefaultSize(getSuggestedMinimumWidth(), widthMeasureSpec);
-        height = getDefaultSize(getSuggestedMinimumHeight(), heightMeasureSpec);
-        setMeasuredDimension(width, height);
-
-        matrix.reset();
-        matrix.postScale((float) width / mBackBitmap.getWidth(), (float) height / mBackBitmap.getHeight());
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        //canvas.drawBitmap(mBackBitmap,matrix,null);
-        canvas.drawBitmap(mDrawBitmap, 0, 0, mPathPaint);
-
-        canvas.drawCircle(300, 300, 100, mPathPaint);
-        mCanvas.drawCircle(450, 300, 100, mPathPaint);
-
-        canvas.drawText("这是测试文字",300, 600, mPathPaint);
-        mCanvas.drawText("这是测试文字",300, 800, mPathPaint);
-
+        int sc = canvas.saveLayer(0, 0, getWidth(), getHeight(), null,Canvas.MATRIX_SAVE_FLAG |
+                Canvas.CLIP_SAVE_FLAG |
+                Canvas.HAS_ALPHA_LAYER_SAVE_FLAG |
+                Canvas.FULL_COLOR_LAYER_SAVE_FLAG |
+                Canvas.CLIP_TO_LAYER_SAVE_FLAG);
         // 绘制笔迹
         for (PathObject p : paths) {
             if (!p.path.actions.isEmpty()) {
                 if (p.isCover) {
-                    mCanvas.drawPath(p.path, mCoverPaint);
+                    canvas.drawPath(p.path, mCoverPaint);
                 } else {
-                    mCanvas.drawPath(p.path, mPathPaint);
+                    canvas.drawPath(p.path, mPathPaint);
                 }
             }
         }
         if (isCover) {
-            mCanvas.drawPath(mPath, mCoverPaint);
+            canvas.drawPath(mPath, mCoverPaint);
         } else {
-            mCanvas.drawPath(mPath, mPathPaint);
+            canvas.drawPath(mPath, mPathPaint);
         }
+        canvas.restoreToCount(sc);
     }
 
     /**

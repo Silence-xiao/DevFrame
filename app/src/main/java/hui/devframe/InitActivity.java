@@ -84,10 +84,10 @@ public class InitActivity extends BaseActivity {
 //                });
 //            }
 //        });
-        createButton("draw", new ReturnCall() {
+        createButton("new draw", new ReturnCall() {
             @Override
             public void call() {
-                startActivity(new Intent(InitActivity.this, Xfermodes.class));
+                startActivity(new Intent(InitActivity.this, NewDrawActivity.class));
             }
         });
         createButton("draw", new ReturnCall() {
