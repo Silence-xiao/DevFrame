@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import hui.devframe.R;
-import hui.devframe.adapter.SimplePagerAdapter;
 import hui.devframe.base.BaseActivity;
 import hui.devframe.util.ScreenUtil;
 import hui.devframe.view.RectIndicatorView;

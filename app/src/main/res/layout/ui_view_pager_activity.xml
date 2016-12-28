@@ -11,18 +11,23 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <hui.devframe.view.RectIndicatorView
-        android:id="@+id/init_indicator"
-        android:layout_width="match_parent"
+    <Button
+        android:id="@+id/pager_add_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="增加一页" />
+
+    <Button
+        android:id="@+id/pager_update_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/pager_add_btn"
+        android:text="更新当前页" />
+
+    <TextView
+        android:id="@+id/pager_indicator_text"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="50dp" />
-
-    <hui.devframe.view.RectPagerIndicator
-        android:id="@+id/init_indicator2"
-        android:layout_width="match_parent"
-        android:layout_height="5dp"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="150dp"
-        auto:rect_fore="@color/blue" />
+        tools:text="1/10" />
 </RelativeLayout>
