@@ -29,6 +29,8 @@
         <activity android:name=".DrawActivity"
             android:hardwareAccelerated="false" />
         <activity android:name=".MyDrawActivity" />
+        <activity android:name=".TestDetectorActivity" />
+        <activity android:name=".TestSwipeRefreshActivity" />
         <activity android:name=".NewDrawActivity" />
         <activity android:name=".entry.ScrollLearnActivity" />
         <activity android:name=".Xfermodes">

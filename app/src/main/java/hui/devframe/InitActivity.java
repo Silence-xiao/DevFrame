@@ -5,10 +5,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
-
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
 
 import hui.devframe.base.BaseActivity;
 import hui.devframe.entry.FragmentLearnActivity;
@@ -23,7 +19,6 @@ public class InitActivity extends BaseActivity {
     private LogUtils log = LogUtils.getLog(InitActivity.class.getSimpleName());
 
     ViewGroup mRoot;
-    private ImageView mImg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,36 +33,35 @@ public class InitActivity extends BaseActivity {
     }
 
     private void initView() {
-        mImg = (ImageView) findViewById(R.id.init_image);
     }
 
     private void initButtons() {
         mRoot = (ViewGroup) findViewById(R.id.init_root);
 
-        createButton("测试Fragment", new ReturnCall() {
-            @Override
-            public void call() {
-                startActivity(new Intent(InitActivity.this, FragmentLearnActivity.class));
-            }
-        });
-        createButton("测试ViewPager", new ReturnCall() {
-            @Override
-            public void call() {
-                startActivity(new Intent(InitActivity.this, PagerLearnActivity.class));
-            }
-        });
-        createButton("测试Matrix", new ReturnCall() {
-            @Override
-            public void call() {
-                startActivity(new Intent(InitActivity.this, MatrixLearnActivity.class));
-            }
-        });
-        createButton("veex", new ReturnCall() {
-            @Override
-            public void call() {
-                startActivity(new Intent(InitActivity.this, VeexActivity.class));
-            }
-        });
+//        createButton("测试Fragment", new ReturnCall() {
+//            @Override
+//            public void call() {
+//                startActivity(new Intent(InitActivity.this, FragmentLearnActivity.class));
+//            }
+//        });
+//        createButton("测试ViewPager", new ReturnCall() {
+//            @Override
+//            public void call() {
+//                startActivity(new Intent(InitActivity.this, PagerLearnActivity.class));
+//            }
+//        });
+//        createButton("测试Matrix", new ReturnCall() {
+//            @Override
+//            public void call() {
+//                startActivity(new Intent(InitActivity.this, MatrixLearnActivity.class));
+//            }
+//        });
+//        createButton("veex", new ReturnCall() {
+//            @Override
+//            public void call() {
+//                startActivity(new Intent(InitActivity.this, VeexActivity.class));
+//            }
+//        });
 //        createButton("Picasso测试", new ReturnCall() {
 //            @Override
 //            public void call() {
@@ -84,28 +78,22 @@ public class InitActivity extends BaseActivity {
 //                });
 //            }
 //        });
-        createButton("new draw", new ReturnCall() {
+        createButton("TestDetectorActivity", new ReturnCall() {
             @Override
             public void call() {
-                startActivity(new Intent(InitActivity.this, NewDrawActivity.class));
-            }
-        });
-        createButton("draw", new ReturnCall() {
-            @Override
-            public void call() {
-                startActivity(new Intent(InitActivity.this, Xfermodes.class));
-            }
-        });
-        createButton("my draw", new ReturnCall() {
-            @Override
-            public void call() {
-                startActivity(new Intent(InitActivity.this, MyDrawActivity.class));
+                startActivity(new Intent(InitActivity.this, TestDetectorActivity.class));
             }
         });
         createButton("scroll", new ReturnCall() {
             @Override
             public void call() {
                 startActivity(new Intent(InitActivity.this, ScrollLearnActivity.class));
+            }
+        });
+        createButton("refresh", new ReturnCall() {
+            @Override
+            public void call() {
+                startActivity(new Intent(InitActivity.this, TestSwipeRefreshActivity.class));
             }
         });
     }
