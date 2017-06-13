@@ -9,31 +9,31 @@
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
 
     <application
-        android:name=".base.BaseApplication"
+        android:name="com.hui.devframe.common.base.BaseApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".InitActivity">
+        <activity android:name="com.hui.devframe.activity.InitActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".entry.FragmentLearnActivity" />
-        <activity android:name=".entry.PagerLearnActivity" />
-        <activity android:name=".entry.MatrixLearnActivity" />
-        <activity android:name=".veex.VeexActivity" />
-        <activity android:name=".DrawActivity"
+        <activity android:name="com.hui.devframe.activity.entry.FragmentLearnActivity" />
+        <activity android:name="com.hui.devframe.activity.entry.PagerLearnActivity" />
+        <activity android:name="com.hui.devframe.activity.entry.MatrixLearnActivity" />
+        <activity android:name="com.hui.devframe.veex.VeexActivity" />
+        <activity android:name="com.hui.devframe.activity.DrawActivity"
             android:hardwareAccelerated="false" />
-        <activity android:name=".MyDrawActivity" />
-        <activity android:name=".TestDetectorActivity" />
-        <activity android:name=".TestSwipeRefreshActivity" />
-        <activity android:name=".NewDrawActivity" />
-        <activity android:name=".entry.ScrollLearnActivity" />
-        <activity android:name=".Xfermodes">
+        <activity android:name="com.hui.devframe.activity.MyDrawActivity" />
+        <activity android:name="com.hui.devframe.activity.TestDetectorActivity" />
+        <activity android:name="com.hui.devframe.activity.TestSwipeRefreshActivity" />
+        <activity android:name="com.hui.devframe.activity.NewDrawActivity" />
+        <activity android:name="com.hui.devframe.activity.entry.ScrollLearnActivity" />
+        <activity android:name="com.hui.devframe.activity.Xfermodes">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.SAMPLE_CODE" />

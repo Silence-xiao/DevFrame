@@ -5,7 +5,32 @@
     android:layout_height="match_parent"
     android:background="#ffffff"
     android:orientation="vertical"
-    tools:context="hui.devframe.InitActivity">
+    tools:context="hui.devframe.com.hui.devframe.activity.InitActivity">
+
+    <RelativeLayout
+        android:layout_width="100dp"
+        android:layout_marginLeft="100dp"
+        android:background="@color/blue"
+        android:layout_height="100dp">
+        <ImageView
+            android:id="@+id/test_rect"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"
+            android:src="@drawable/canvas_view_earse_bg"
+            />
+
+        <ImageView
+            android:id="@+id/test_rect2"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            android:layout_below="@+id/test_rect"
+            android:visibility="invisible"
+            android:layout_height="wrap_content"
+            android:src="@drawable/canvas_view_earse_bg"
+            />
+    </RelativeLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -22,7 +47,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-        <hui.devframe.view.DragedView
+        <com.hui.devframe.view.DragedView
             android:layout_width="match_parent"
             android:layout_height="500dp" />
     </LinearLayout>
