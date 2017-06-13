@@ -11,27 +11,31 @@ import android.graphics.PaintFlagsDrawFilter;
 import android.util.AttributeSet;
 import android.view.View;
 
-import hui.devframe.R;
 import com.hui.devframe.util.ScreenUtil;
+
+import hui.devframe.R;
 
 public class DynamicWave extends View {
 
     // 波纹颜色
     private static final int WAVE_PAINT_ONE_COLOR = Color.parseColor("#66c1fc");
     private static final int WAVE_PAINT_SECOND_COLOR = Color.parseColor("#32adfa");
-    // y = Asin(wx+b)+h
-    private float mAHeight;
     private static final int OFFSET_Y = 0;
     // 第一条水波移动速度
     private static final int TRANSLATE_X_SPEED_ONE = 7;
     // 第二条水波移动速度
     private static final int TRANSLATE_X_SPEED_TWO = 5;
-
+    Runnable run = new Runnable() {
+        @Override
+        public void run() {
+            invalidate();
+        }
+    };
+    // y = Asin(wx+b)+h
+    private float mAHeight;
     private float mCycleFactorW;
-
     private float mCurRatio = 0;
     private float mSetRatio = 0;
-
     private int mTotalWidth, mTotalHeight;
     private float[] mYPositions;
     private float[] mResetOneYPositions;
@@ -40,9 +44,10 @@ public class DynamicWave extends View {
     private int mXOffsetSpeedTwo;
     private int mXOneOffset;
     private int mXTwoOffset;
-
     private Paint mWavePaint;
     private DrawFilter mDrawFilter;
+    private float mAddI;
+    private int mTime;
 
     public DynamicWave(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -106,13 +111,6 @@ public class DynamicWave extends View {
         postDelayed(run, 0);
     }
 
-    Runnable run = new Runnable() {
-        @Override
-        public void run() {
-            invalidate();
-        }
-    };
-
     private void resetPositonY() {
         // mXOneOffset代表当前第一条水波纹要移动的距离
         int yOneInterval = mYPositions.length - mXOneOffset;
@@ -125,9 +123,6 @@ public class DynamicWave extends View {
                 yTwoInterval);
         System.arraycopy(mYPositions, 0, mResetTwoYPositions, yTwoInterval, mXTwoOffset);
     }
-
-    private float mAddI;
-    private int mTime;
 
     public void updateWave(float ratio, float mI, int time) {
         mSetRatio = ratio;

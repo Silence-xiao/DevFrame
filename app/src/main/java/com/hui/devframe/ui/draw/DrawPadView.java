@@ -14,24 +14,18 @@ import java.util.ArrayList;
 
 public class DrawPadView extends View {
 
-    private Paint mPathPaint;
-    private Paint mCoverPaint;
-
     // 路径数据
     public SerializePath mPath;
     public ArrayList<PathObject> paths = new ArrayList<>();
-
     // 是否在写
     public boolean isDown = false;
+    private Paint mPathPaint;
+    private Paint mCoverPaint;
     // 上一次绘制位置
     private float mLastX;
     private float mLastY;
 
     private boolean isCover = false;
-
-    public void setPenCover(boolean isCover) {
-        this.isCover = isCover;
-    }
 
     public DrawPadView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -55,11 +49,15 @@ public class DrawPadView extends View {
         mPath = new SerializePath();
     }
 
+    public void setPenCover(boolean isCover) {
+        this.isCover = isCover;
+    }
+
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        int sc = canvas.saveLayer(0, 0, getWidth(), getHeight(), null,Canvas.MATRIX_SAVE_FLAG |
+        int sc = canvas.saveLayer(0, 0, getWidth(), getHeight(), null, Canvas.MATRIX_SAVE_FLAG |
                 Canvas.CLIP_SAVE_FLAG |
                 Canvas.HAS_ALPHA_LAYER_SAVE_FLAG |
                 Canvas.FULL_COLOR_LAYER_SAVE_FLAG |
@@ -134,19 +132,6 @@ public class DrawPadView extends View {
         postInvalidate();
     }
 
-    // 笔迹对象
-    class PathObject {
-        SerializePath path;
-        boolean isCover;
-        float strokeWidth;
-
-        public PathObject(SerializePath path, boolean isCover, float strokeWidth) {
-            this.path = path;
-            this.isCover = isCover;
-            this.strokeWidth = strokeWidth;
-        }
-    }
-
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
@@ -161,5 +146,18 @@ public class DrawPadView extends View {
                 break;
         }
         return true;
+    }
+
+    // 笔迹对象
+    class PathObject {
+        SerializePath path;
+        boolean isCover;
+        float strokeWidth;
+
+        public PathObject(SerializePath path, boolean isCover, float strokeWidth) {
+            this.path = path;
+            this.isCover = isCover;
+            this.strokeWidth = strokeWidth;
+        }
     }
 }

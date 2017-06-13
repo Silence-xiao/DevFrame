@@ -17,6 +17,10 @@ public class SerializePath extends Path implements Serializable {
 
     public ArrayList<PathAction> actions = new ArrayList<PathAction>();
 
+    public static ActionQuad GetQuadToAction(float x, float y, float x1, float y1) {
+        return new ActionQuad(x, y, x1, y1);
+    }
+
     @Override
     public void moveTo(float x, float y) {
         actions.add(new ActionMove(x, y));
@@ -46,13 +50,8 @@ public class SerializePath extends Path implements Serializable {
             }
         }
     }
-    public static  ActionQuad GetQuadToAction(float x, float y, float x1, float y1){
-        return new ActionQuad(x, y, x1, y1);
-    }
 
     public interface PathAction {
-        enum PathActionType {LINE_TO, MOVE_TO, QUAD_TO}
-
         PathActionType getType();
 
         float getX();
@@ -62,6 +61,8 @@ public class SerializePath extends Path implements Serializable {
         float getX1();
 
         float getY1();
+
+        enum PathActionType {LINE_TO, MOVE_TO, QUAD_TO}
     }
 
     public static class ActionMove implements PathAction, Serializable {

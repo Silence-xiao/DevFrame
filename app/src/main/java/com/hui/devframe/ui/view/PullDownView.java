@@ -41,116 +41,37 @@ public class PullDownView extends FrameLayout implements OnGestureListener, Anim
     protected static final int STATE_OPEN_MAX_RELEASE = 5;          // 下拉结束，手指松开，已经超过阈值
     protected static final int STATE_UPDATE = 6;                    // 下拉刷新被触发，正在更新
     protected static final int STATE_UPDATE_SCROLL = 7;             // 下拉刷新被触发，正在更新，此时用户又在滚动
-
-    protected static int UPDATE_HEIGHT;                             // 下拉最大高度，根据这个值判断是否可以刷新
-
     protected static final int ARROW_DIRECTION_UP = 1;              // 箭头的方向,向上
     protected static final int ARROW_DIRECTION_DOWN = 2;            // 箭头的方向,向下
-    private boolean mIsLiveChat;
-
+    protected static int UPDATE_HEIGHT;                             // 下拉最大高度，根据这个值判断是否可以刷新
+    public FrameLayout mRefreshView;
     protected int mMaxHeight;                                       // 下拉刷新条最大高度，包括广告高度
     protected View mPullDownContainer;
     protected View mUpRefreshContainer;
     protected ImageView mPullDownIcon;
     protected ImageView mUpRefreshIcon;
     protected View mRefreshContainer;
-
+    protected Flinger mFlinger = new Flinger();
+    protected int mPadding;                                          // 当前的下拉位移
+    protected int mState = STATE_CLOSE;                             // 当前的状态，默认值为未处于下拉状态
+    protected UpdateHandle mUpdateHandle;                           // 更新事件监听器
+    protected FlingHandle mFlingHandle;                             // 滑动事件监听器
+    boolean mIsScrollingBack;
+    boolean mIsShowStatusIcon = true;                       // 是否显示箭头和加载状态
+    private boolean mIsLiveChat;
     private GestureDetector mDetector;
     private Animation mAnimationUp;
     private Animation mAnimationDown;
     private AnimatorSet mPullDownAnim = new AnimatorSet();
-    boolean mIsScrollingBack;
-    protected Flinger mFlinger = new Flinger();
-
-    protected int mPadding;                                          // 当前的下拉位移
-    protected int mState = STATE_CLOSE;                             // 当前的状态，默认值为未处于下拉状态
-
-    protected UpdateHandle mUpdateHandle;                           // 更新事件监听器
-    protected FlingHandle mFlingHandle;                             // 滑动事件监听器
-
     private IUpdateViewWatcher mUpdateViewWatcher;
-
-    public FrameLayout mRefreshView;
-
     private boolean mEnable = true;
-
-    boolean mIsShowStatusIcon = true;                       // 是否显示箭头和加载状态
-
     private int mArrowDirect = ARROW_DIRECTION_DOWN;
     private long startTime = 0;
     private long mLimit = TIME_LIMIT;                               // 刷新人延迟时间，默认是1秒
     private boolean canPullDown = true;                             // 是不是可以下拉
     private boolean canContentSwipeHorizontal = false;              // 内容是否可以横向滚动
     private SwipeType swipeType = SwipeType.SWIPE_TYPE_IDLE;        // 当前滚动方向，只有在canContentSwipeHorizontal被置为true时有意义
-
-    private enum SwipeType {
-        SWIPE_TYPE_IDLE,
-        SWIPE_TYPE_HORIZONTAL,
-        SWIPE_TYPE_VERTICAL,
-    }
-
-
-
-    // 能不能下拉设置
-    protected boolean isCanPullDown() {
-        return canPullDown;
-    }
-
-    public void setCanPullDown(boolean canPullDown) {
-        this.canPullDown = canPullDown;
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    /**
-     * List滑动监听
-     *
-     * @author guhui
-     */
-    protected interface IListPullTouchListener {
-        /**
-         * 滑动
-         *
-         * @param distance 滑动的距离
-         */
-        public void onListPullTouch(float distance);
-    }
-
     private IListPullTouchListener mListPullTouchListener;
-
-    protected void setOnPullTouchListener(IListPullTouchListener listener) {
-        mListPullTouchListener = listener;
-    }
-
-    protected void setShowStatusIcon(boolean isShowStatusIcon) {
-        mIsShowStatusIcon = isShowStatusIcon;
-
-        if (!mIsShowStatusIcon) {
-            mPullDownContainer.setVisibility(View.GONE);
-        }
-    }
-
-
-
-
-
-
-
-
-
 
 
     // 构造 初始化
@@ -167,10 +88,32 @@ public class PullDownView extends FrameLayout implements OnGestureListener, Anim
         addUpdateBar();
     }
 
+
     public PullDownView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
         addUpdateBar();
+    }
+
+    // 能不能下拉设置
+    protected boolean isCanPullDown() {
+        return canPullDown;
+    }
+
+    public void setCanPullDown(boolean canPullDown) {
+        this.canPullDown = canPullDown;
+    }
+
+    protected void setOnPullTouchListener(IListPullTouchListener listener) {
+        mListPullTouchListener = listener;
+    }
+
+    protected void setShowStatusIcon(boolean isShowStatusIcon) {
+        mIsShowStatusIcon = isShowStatusIcon;
+
+        if (!mIsShowStatusIcon) {
+            mPullDownContainer.setVisibility(View.GONE);
+        }
     }
 
     private void init() {
@@ -182,7 +125,7 @@ public class PullDownView extends FrameLayout implements OnGestureListener, Anim
         mMaxHeight = UPDATE_HEIGHT;
         setDrawingCacheEnabled(false);
         setClipChildren(false);
-        mDetector = new GestureDetector(getContext(),this);
+        mDetector = new GestureDetector(getContext(), this);
         mDetector.setIsLongpressEnabled(true);
         ViewConfiguration viewConfiguration = ViewConfiguration.get(getContext());
     }
@@ -192,14 +135,14 @@ public class PullDownView extends FrameLayout implements OnGestureListener, Anim
      */
     protected void addUpdateBar() {
         mAnimationUp = AnimationUtils.loadAnimation(getContext(), R.anim.common_listview_rotate_up);
-        if(mAnimationUp != null){
+        if (mAnimationUp != null) {
             mAnimationUp.setFillAfter(true);
             mAnimationUp.setFillBefore(false);
             mAnimationUp.setAnimationListener(this);
         }
 
         mAnimationDown = AnimationUtils.loadAnimation(getContext(), R.anim.common_listview_rotate_down);
-        if(mAnimationDown != null){
+        if (mAnimationDown != null) {
             mAnimationDown.setFillAfter(true);
             mAnimationDown.setFillBefore(false);
             mAnimationDown.setAnimationListener(this);
@@ -231,7 +174,7 @@ public class PullDownView extends FrameLayout implements OnGestureListener, Anim
 
     @Override
     public void onAnimationEnd(Animation animation) {
-        if(getHandler() == null){
+        if (getHandler() == null) {
             return;
         }
         if (mArrowDirect == ARROW_DIRECTION_UP) {
@@ -258,20 +201,10 @@ public class PullDownView extends FrameLayout implements OnGestureListener, Anim
     public void onAnimationRepeat(Animation animation) {
     }
 
-
-
-
-
-
-
-
-
-
     // 获取内容 设置回调
     protected View getContentView() {
         return getChildAt(1);
     }
-
 
     protected void setUpdateHandle(UpdateHandle handle) {
         mUpdateHandle = handle;
@@ -281,8 +214,6 @@ public class PullDownView extends FrameLayout implements OnGestureListener, Anim
         mFlingHandle = handle;
     }
 
-
-
     public void setRefreshIcon(int resId) {
         mUpRefreshIcon.setBackgroundResource(resId);
     }
@@ -290,20 +221,6 @@ public class PullDownView extends FrameLayout implements OnGestureListener, Anim
     public void setPullDownIcon(int resId) {
         mPullDownIcon.setBackgroundResource(resId);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
@@ -609,11 +526,6 @@ public class PullDownView extends FrameLayout implements OnGestureListener, Anim
         }
     }
 
-    public interface IUpdateViewWatcher {
-        void updateViewShow();
-        void updateViewHide();
-    }
-
     public void setUpdateViewWatcher(IUpdateViewWatcher watcher) {
         mUpdateViewWatcher = watcher;
     }
@@ -665,6 +577,7 @@ public class PullDownView extends FrameLayout implements OnGestureListener, Anim
 
     /**
      * 下拉时的动画
+     *
      * @param b
      */
     protected void showPullDownProgress(boolean b) {
@@ -678,6 +591,7 @@ public class PullDownView extends FrameLayout implements OnGestureListener, Anim
 
     /**
      * 刷新时loading的动画
+     *
      * @param b
      */
     private void showProgress(boolean b) {
@@ -685,7 +599,7 @@ public class PullDownView extends FrameLayout implements OnGestureListener, Anim
         if (b) {
             drawable.start();
         } else {
-             drawable.stop();
+            drawable.stop();
         }
 
         mUpRefreshContainer.setVisibility(b ? VISIBLE : GONE);
@@ -700,7 +614,7 @@ public class PullDownView extends FrameLayout implements OnGestureListener, Anim
         mRefreshContainer.layout(0, 0, getMeasuredWidth(), -mPadding);
         try {
             getContentView().layout(0, -mPadding, getMeasuredWidth(), getMeasuredHeight() - mPadding);
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -714,6 +628,150 @@ public class PullDownView extends FrameLayout implements OnGestureListener, Anim
     public boolean onSingleTapUp(MotionEvent e) {
         KLog.e("onSingleTapUp");
         return false;
+    }
+
+    protected long getLimit() {
+        return mLimit;
+    }
+
+    /**
+     * 设置刷新的等待时间
+     *
+     * @param limit
+     */
+    protected void setLimit(long limit) {
+        this.mLimit = limit;
+    }
+
+    /**
+     * 结束更新
+     *
+     * @param date 更新时间
+     */
+    protected void endUpdate(final Date date) {
+        if (System.currentTimeMillis() - startTime > mLimit) {
+            close();
+        } else {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    close();
+                }
+            }, mLimit - (System.currentTimeMillis() - startTime));
+        }
+    }
+
+    public void close() {
+        if (mPadding != 0) {
+            scrollToClose();
+        } else {
+            mState = STATE_CLOSE;
+        }
+        mPullDownContainer.clearAnimation();
+        mPullDownContainer.setVisibility(View.GONE);
+        resetAnim();
+        mArrowDirect = ARROW_DIRECTION_DOWN;
+        startTime = 0;
+    }
+
+    /**
+     * 设置状态为正在刷新
+     */
+    public void update() {
+        startTime = System.currentTimeMillis();
+        mPadding = -UPDATE_HEIGHT;
+        mState = STATE_UPDATE_SCROLL;
+        postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                updateView();
+
+            }
+        }, 10);
+    }
+
+    public boolean isEnable() {
+        return mEnable;
+    }
+
+    public void setEnable(boolean enable) {
+        mEnable = enable;
+        invalidate();
+    }
+
+    /**
+     * uncomment the code to enable animation
+     */
+    private void makeArrowUp() {
+        if (mArrowDirect == ARROW_DIRECTION_UP) {
+            return;
+        }
+        mArrowDirect = ARROW_DIRECTION_UP;
+    }
+
+    /**
+     * uncomment the code to enable animation
+     */
+    private void makeArrowDown() {
+        if (mArrowDirect == ARROW_DIRECTION_DOWN) {
+            return;
+        }
+        mArrowDirect = ARROW_DIRECTION_DOWN;
+    }
+
+    private void resetAnim() {
+        if (mPullDownAnim != null) {
+            mPullDownAnim.cancel();
+        }
+    }
+
+    public boolean getCanContentSwipeHorizontal() {
+        return canContentSwipeHorizontal;
+    }
+
+    public void setCanContentSwipeHorizontal(boolean canContentSwipeHorizontal) {
+        this.canContentSwipeHorizontal = canContentSwipeHorizontal;
+    }
+
+    private enum SwipeType {
+        SWIPE_TYPE_IDLE,
+        SWIPE_TYPE_HORIZONTAL,
+        SWIPE_TYPE_VERTICAL,
+    }
+
+    /**
+     * List滑动监听
+     *
+     * @author guhui
+     */
+    protected interface IListPullTouchListener {
+        /**
+         * 滑动
+         *
+         * @param distance 滑动的距离
+         */
+        public void onListPullTouch(float distance);
+    }
+
+    public interface IUpdateViewWatcher {
+        void updateViewShow();
+
+        void updateViewHide();
+    }
+
+    public interface UpdateHandle {
+        void onUpdate();
+    }
+
+    protected interface FlingHandle {
+        void flingToLeft();
+
+        void flingToRight();
+
+        void flingToUp();
+
+        void flingToDown();
     }
 
     /**
@@ -771,120 +829,5 @@ public class PullDownView extends FrameLayout implements OnGestureListener, Anim
                 removeCallbacks(this);
             }
         }
-    }
-
-    /**
-     * 设置刷新的等待时间
-     *
-     * @param limit
-     */
-    protected void setLimit(long limit) {
-        this.mLimit = limit;
-    }
-
-    protected long getLimit() {
-        return mLimit;
-    }
-
-    /**
-     * 结束更新
-     *
-     * @param date 更新时间
-     */
-    protected void endUpdate(final Date date) {
-        if (System.currentTimeMillis() - startTime > mLimit) {
-            close();
-        } else {
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    close();
-                }
-            }, mLimit - (System.currentTimeMillis() - startTime));
-        }
-    }
-
-    public void close() {
-        if (mPadding != 0) {
-            scrollToClose();
-        } else {
-            mState = STATE_CLOSE;
-        }
-        mPullDownContainer.clearAnimation();
-        mPullDownContainer.setVisibility(View.GONE);
-        resetAnim();
-        mArrowDirect = ARROW_DIRECTION_DOWN;
-        startTime = 0;
-    }
-
-    public interface UpdateHandle {
-        void onUpdate();
-    }
-
-    protected interface FlingHandle {
-        void flingToLeft();
-        void flingToRight();
-        void flingToUp();
-        void flingToDown();
-    }
-
-    /**
-     * 设置状态为正在刷新
-     */
-    public void update() {
-        startTime = System.currentTimeMillis();
-        mPadding = -UPDATE_HEIGHT;
-        mState = STATE_UPDATE_SCROLL;
-        postDelayed(new Runnable() {
-
-            @Override
-            public void run() {
-                updateView();
-
-            }
-        }, 10);
-    }
-
-    public void setEnable(boolean enable) {
-        mEnable = enable;
-        invalidate();
-    }
-
-    public boolean isEnable() {
-        return mEnable;
-    }
-
-    /**
-     * uncomment the code to enable animation
-     */
-    private void makeArrowUp() {
-        if (mArrowDirect == ARROW_DIRECTION_UP) {
-            return;
-        }
-        mArrowDirect = ARROW_DIRECTION_UP;
-    }
-
-    /**
-     * uncomment the code to enable animation
-     */
-    private void makeArrowDown() {
-        if (mArrowDirect == ARROW_DIRECTION_DOWN) {
-            return;
-        }
-        mArrowDirect = ARROW_DIRECTION_DOWN;
-    }
-
-    private void resetAnim(){
-        if(mPullDownAnim != null){
-            mPullDownAnim.cancel();
-        }
-    }
-
-    public void setCanContentSwipeHorizontal(boolean canContentSwipeHorizontal) {
-        this.canContentSwipeHorizontal = canContentSwipeHorizontal;
-    }
-
-    public boolean getCanContentSwipeHorizontal() {
-        return canContentSwipeHorizontal;
     }
 }

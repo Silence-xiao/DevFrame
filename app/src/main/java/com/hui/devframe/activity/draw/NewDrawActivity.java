@@ -4,9 +4,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import hui.devframe.R;
 import com.hui.devframe.base.BaseActivity;
 import com.hui.devframe.ui.draw.DrawPadView;
+
+import hui.devframe.R;
 
 public class NewDrawActivity extends BaseActivity {
 

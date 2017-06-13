@@ -6,10 +6,11 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.hui.devframe.base.BaseActivity;
+
 import java.util.ArrayList;
 
 import hui.devframe.R;
-import com.hui.devframe.base.BaseActivity;
 
 /**
  * Created by wanghui on 16/9/29.

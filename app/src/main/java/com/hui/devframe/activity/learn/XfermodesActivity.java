@@ -19,12 +19,9 @@ package com.hui.devframe.activity.learn;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Matrix;
 import android.graphics.Paint;
-import android.graphics.Path;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
@@ -71,11 +68,6 @@ public class XfermodesActivity extends Activity {
         private static final int W = 200;
         private static final int H = 300;
         private static final int ROW_MAX = 4;   // number of samples per row
-
-        private Bitmap mSrcB;
-        private Bitmap mDstB;
-        private Shader mBG;     // background checker-board pattern
-
         private static final Xfermode[] sModes = {
                 new PorterDuffXfermode(PorterDuff.Mode.CLEAR),
                 new PorterDuffXfermode(PorterDuff.Mode.SRC),
@@ -94,13 +86,15 @@ public class XfermodesActivity extends Activity {
                 new PorterDuffXfermode(PorterDuff.Mode.MULTIPLY),
                 new PorterDuffXfermode(PorterDuff.Mode.SCREEN)
         };
-
         private static final String[] sLabels = {
                 "Clear", "Src", "Dst", "SrcOver",
                 "DstOver", "SrcIn", "DstIn", "SrcOut",
                 "DstOut", "SrcATop", "DstATop", "Xor",
                 "Darken", "Lighten", "Multiply", "Screen"
         };
+        private Bitmap mSrcB;
+        private Bitmap mDstB;
+        private Shader mBG;     // background checker-board pattern
 
         public SampleView(Context context) {
             super(context);

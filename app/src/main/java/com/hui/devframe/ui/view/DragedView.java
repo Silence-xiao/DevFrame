@@ -62,7 +62,7 @@ public class DragedView extends View {
                 mDy = event.getY() - mLastY;
                 mLastX = event.getX();
                 mLastY = event.getY();
-                scrollBy((int)-mDx, (int)-mDy);
+                scrollBy((int) -mDx, (int) -mDy);
                 break;
             case ACTION_UP:
                 break;

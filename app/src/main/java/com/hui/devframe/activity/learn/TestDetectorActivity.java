@@ -6,10 +6,10 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.hui.devframe.base.BaseActivity;
 import com.socks.library.KLog;
 
 import hui.devframe.R;
-import com.hui.devframe.base.BaseActivity;
 
 public class TestDetectorActivity extends BaseActivity {
 

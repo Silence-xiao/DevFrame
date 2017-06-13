@@ -12,10 +12,13 @@ import android.widget.Toast;
  */
 public class DialogUtil {
 
+    private static ProgressDialog dialog;
+
     /**
      * 显示toast，length short
+     *
      * @param context 上下文
-     * @param text 文本
+     * @param text    文本
      */
     public static void toast(final Context context, final String text) {
         if (Looper.myLooper() != Looper.getMainLooper()) {//不在主线程
@@ -44,8 +47,6 @@ public class DialogUtil {
             Toast.makeText(context, text, Toast.LENGTH_LONG).show();
         }
     }
-
-    private static ProgressDialog dialog;
 
     public static void showWaiting(Context context, String text) {
         dialog = new ProgressDialog(context);

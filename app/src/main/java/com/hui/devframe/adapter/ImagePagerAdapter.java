@@ -16,8 +16,8 @@ import java.util.List;
  * Created by wanghui on 15/8/14.
  */
 public class ImagePagerAdapter extends PagerAdapter {
-    private Context mContext;
     public List<String> mUrls;
+    private Context mContext;
 
     public ImagePagerAdapter(Context mContext, List<String> urls) {
         this.mContext = mContext;

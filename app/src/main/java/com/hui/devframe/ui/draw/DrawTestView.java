@@ -15,15 +15,16 @@ import android.view.View;
 
 public class DrawTestView extends View {
 
-    private Bitmap mDrawBitmap;
-
-    private Paint mPathPaint;
-    private Paint mCoverPaint;
-
-    private Canvas mCanvas;
-
     Path pen = new Path();
     Path clear = new Path();
+    int W = 400;
+    int H = 400;
+    Bitmap src = makeSrc(W, H);// 蓝色
+    Bitmap dst = makeDst(W, H);// 黄色
+    private Bitmap mDrawBitmap;
+    private Paint mPathPaint;
+    private Paint mCoverPaint;
+    private Canvas mCanvas;
 
     public DrawTestView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -55,14 +56,13 @@ public class DrawTestView extends View {
         clear.lineTo(0, 600);
     }
 
-
     static Bitmap makeDst(int w, int h) {
         Bitmap bm = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
         Canvas c = new Canvas(bm);
         Paint p = new Paint(Paint.ANTI_ALIAS_FLAG);
 
         p.setColor(0xFFFFCC44);
-        c.drawOval(new RectF(0, 0, w*3/4, h*3/4), p);
+        c.drawOval(new RectF(0, 0, w * 3 / 4, h * 3 / 4), p);
         return bm;
     }
 
@@ -72,18 +72,13 @@ public class DrawTestView extends View {
         Paint p = new Paint(Paint.ANTI_ALIAS_FLAG);
 
         p.setColor(0xFF66AAFF);
-        c.drawRect(w/3, h/3, w*19/20, h*19/20, p);
+        c.drawRect(w / 3, h / 3, w * 19 / 20, h * 19 / 20, p);
         return bm;
     }
 
-    int W = 400;
-    int H = 400;
-    Bitmap src = makeSrc(W,H);// 蓝色
-    Bitmap dst = makeDst(W,H);// 黄色
-
     @Override
     protected void onDraw(Canvas canvas) {
-        int sc = canvas.saveLayer(0, 0, 500, 500, null,Canvas.MATRIX_SAVE_FLAG |
+        int sc = canvas.saveLayer(0, 0, 500, 500, null, Canvas.MATRIX_SAVE_FLAG |
                 Canvas.CLIP_SAVE_FLAG |
                 Canvas.HAS_ALPHA_LAYER_SAVE_FLAG |
                 Canvas.FULL_COLOR_LAYER_SAVE_FLAG |
@@ -91,8 +86,5 @@ public class DrawTestView extends View {
         canvas.drawPath(pen, mPathPaint);
         canvas.drawPath(clear, mCoverPaint);
         canvas.restoreToCount(sc);
-//        canvas.drawBitmap(dst, 0, 0, mPathPaint);
-//        canvas.drawBitmap(src, 0, 0, mCoverPaint);
-//        canvas.drawBitmap(src, 0, 400, mPathPaint);
     }
 }

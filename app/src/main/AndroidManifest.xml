@@ -25,9 +25,6 @@
         <activity android:name="com.hui.devframe.activity.fragment.FragmentLearnActivity" />
         <activity android:name="com.hui.devframe.activity.entry.PagerLearnActivity" />
         <activity android:name="com.hui.devframe.activity.entry.MatrixLearnActivity" />
-        <activity android:name="com.hui.devframe.learn.veex.VeexActivity" />
-        <activity android:name="com.hui.devframe.activity.draw.DrawActivity"
-            android:hardwareAccelerated="false" />
         <activity android:name="com.hui.devframe.activity.draw.MyDrawActivity" />
         <activity android:name="com.hui.devframe.activity.learn.TestDetectorActivity" />
         <activity android:name="com.hui.devframe.activity.learn.TestSwipeRefreshActivity" />

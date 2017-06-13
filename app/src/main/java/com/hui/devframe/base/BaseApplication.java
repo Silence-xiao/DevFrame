@@ -2,10 +2,6 @@ package com.hui.devframe.base;
 
 import android.app.Application;
 
-import com.hui.devframe.learn.veex.ImageAdapter;
-import com.taobao.weex.InitConfig;
-import com.taobao.weex.WXSDKEngine;
-
 /**
  * BaseApplication执行一些初始化工作
  * Created by wanghui on 16/6/12.
@@ -13,22 +9,14 @@ import com.taobao.weex.WXSDKEngine;
 public class BaseApplication extends Application {
     private static BaseApplication CONTEXT;
 
+    public static Application getApplication() {
+        return CONTEXT;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
 
         CONTEXT = this;
-        // veex init
-        WXSDKEngine.addCustomOptions("appName", "WXSample");
-        WXSDKEngine.addCustomOptions("appGroup", "WXApp");
-        WXSDKEngine.initialize(this,
-                new InitConfig.Builder()
-                        .setImgAdapter(new ImageAdapter())
-                        .build()
-        );
-    }
-
-    public static Application getApplication() {
-        return CONTEXT;
     }
 }

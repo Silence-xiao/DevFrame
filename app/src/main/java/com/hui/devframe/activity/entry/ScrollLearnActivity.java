@@ -5,8 +5,8 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.hui.devframe.base.BaseActivity;
-import com.hui.devframe.util.ScreenUtil;
 import com.hui.devframe.ui.wave.CompatibleScrollView;
+import com.hui.devframe.util.ScreenUtil;
 
 import hui.devframe.R;
 

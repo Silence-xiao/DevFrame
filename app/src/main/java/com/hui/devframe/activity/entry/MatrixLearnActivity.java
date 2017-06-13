@@ -10,9 +10,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.View.OnTouchListener;
 import android.widget.ImageView;
 
 import hui.devframe.R;
@@ -33,36 +33,6 @@ public class MatrixLearnActivity extends Activity
         view.setOnTouchListener(this);
 
         setContentView(view);
-    }
-
-    class TransformMatrixView extends ImageView {
-        private Bitmap bitmap;
-        private Matrix matrix;
-
-        public TransformMatrixView(Context context) {
-            super(context);
-            bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.test_small);
-            matrix = new Matrix();
-        }
-
-        @Override
-        protected void onDraw(Canvas canvas) {
-            // 画出原图像
-            canvas.drawBitmap(bitmap, 0, 0, null);
-            // 画出变换后的图像
-            canvas.drawBitmap(bitmap, matrix, null);
-            super.onDraw(canvas);
-        }
-
-        @Override
-        public void setImageMatrix(Matrix matrix) {
-            this.matrix.set(matrix);
-            super.setImageMatrix(matrix);
-        }
-
-        public Bitmap getImageBitmap() {
-            return bitmap;
-        }
     }
 
     public boolean onTouch(View v, MotionEvent e) {
@@ -132,70 +102,60 @@ public class MatrixLearnActivity extends Activity
 
             float[] matrixValues = new float[9];
             matrix.getValues(matrixValues);
-            for(int i = 0; i < 3; ++i)
-            {
+            for (int i = 0; i < 3; ++i) {
                 String temp = new String();
-                for(int j = 0; j < 3; ++j)
-                {
-                    temp += matrixValues[3 * i + j ] + "\t";
+                for (int j = 0; j < 3; ++j) {
+                    temp += matrixValues[3 * i + j] + "\t";
                 }
                 Log.e("MatrixLearnActivity", temp);
             }
 
-            matrix.setScale(1,1);
+            matrix.setScale(1, 1);
             matrix.getValues(matrixValues);
-            for(int i = 0; i < 3; ++i)
-            {
+            for (int i = 0; i < 3; ++i) {
                 String temp = new String();
-                for(int j = 0; j < 3; ++j)
-                {
-                    temp += matrixValues[3 * i + j ] + "\t";
+                for (int j = 0; j < 3; ++j) {
+                    temp += matrixValues[3 * i + j] + "\t";
                 }
                 Log.e("MatrixLearnActivity", temp);
             }
-            matrix.setScale(1,1,10,10);
+            matrix.setScale(1, 1, 10, 10);
             matrix.getValues(matrixValues);
-            for(int i = 0; i < 3; ++i)
-            {
+            for (int i = 0; i < 3; ++i) {
                 String temp = new String();
-                for(int j = 0; j < 3; ++j)
-                {
-                    temp += matrixValues[3 * i + j ] + "\t";
+                for (int j = 0; j < 3; ++j) {
+                    temp += matrixValues[3 * i + j] + "\t";
                 }
                 Log.e("MatrixLearnActivity", temp);
             }
 
-			// 4. 缩放
-			matrix.setScale(2f, 2f, 100, 100);
-			// 下面的代码是为了查看matrix中的元素
+            // 4. 缩放
+            matrix.setScale(2f, 2f, 100, 100);
+            // 下面的代码是为了查看matrix中的元素
 
-			matrix.getValues(matrixValues);
-			for(int i = 0; i < 3; ++i)
-			{
-				String temp = new String();
-				for(int j = 0; j < 3; ++j)
-				{
-					temp += matrixValues[3 * i + j ] + "\t";
-				}
-				Log.e("MatrixLearnActivity", temp);
-			}
+            matrix.getValues(matrixValues);
+            for (int i = 0; i < 3; ++i) {
+                String temp = new String();
+                for (int j = 0; j < 3; ++j) {
+                    temp += matrixValues[3 * i + j] + "\t";
+                }
+                Log.e("MatrixLearnActivity", temp);
+            }
 
-			// 做下面的平移变换，纯粹是为了让变换后的图像和原图像不重叠
-			matrix.postTranslate(view.getImageBitmap().getWidth(), view.getImageBitmap().getHeight());
-			view.setImageMatrix(matrix);
+            // 做下面的平移变换，纯粹是为了让变换后的图像和原图像不重叠
+            matrix.postTranslate(view.getImageBitmap().getWidth(), view.getImageBitmap().getHeight());
+            view.setImageMatrix(matrix);
 
-			// 下面的代码是为了查看matrix中的元素
-			matrixValues = new float[9];
-			matrix.getValues(matrixValues);
-			for(int i = 0; i < 3; ++i)
-			{
-				String temp = new String();
-				for(int j = 0; j < 3; ++j)
-				{
-					temp += matrixValues[3 * i + j ] + "\t";
-				}
-				Log.e("MatrixLearnActivity", temp);
-			}
+            // 下面的代码是为了查看matrix中的元素
+            matrixValues = new float[9];
+            matrix.getValues(matrixValues);
+            for (int i = 0; i < 3; ++i) {
+                String temp = new String();
+                for (int j = 0; j < 3; ++j) {
+                    temp += matrixValues[3 * i + j] + "\t";
+                }
+                Log.e("MatrixLearnActivity", temp);
+            }
 
 
 //			// 5. 错切 - 水平
@@ -398,5 +358,35 @@ public class MatrixLearnActivity extends Activity
             view.invalidate();
         }
         return true;
+    }
+
+    class TransformMatrixView extends ImageView {
+        private Bitmap bitmap;
+        private Matrix matrix;
+
+        public TransformMatrixView(Context context) {
+            super(context);
+            bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.test_small);
+            matrix = new Matrix();
+        }
+
+        @Override
+        protected void onDraw(Canvas canvas) {
+            // 画出原图像
+            canvas.drawBitmap(bitmap, 0, 0, null);
+            // 画出变换后的图像
+            canvas.drawBitmap(bitmap, matrix, null);
+            super.onDraw(canvas);
+        }
+
+        @Override
+        public void setImageMatrix(Matrix matrix) {
+            this.matrix.set(matrix);
+            super.setImageMatrix(matrix);
+        }
+
+        public Bitmap getImageBitmap() {
+            return bitmap;
+        }
     }
 }

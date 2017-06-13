@@ -13,9 +13,9 @@ import hui.devframe.R;
  */
 public abstract class BaseSingleFragmentActivity extends BaseActivity {
 
-    protected abstract Fragment createFragment();
-
     Fragment singleFragment;
+
+    protected abstract Fragment createFragment();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

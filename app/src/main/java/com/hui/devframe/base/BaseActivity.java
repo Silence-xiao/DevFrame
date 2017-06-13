@@ -20,18 +20,17 @@ import java.util.HashMap;
 public abstract class BaseActivity extends AppCompatActivity {
 
     private static final long clickSpanMillSeconds = 650;       // 重复点击检测延迟
-
-    protected FrameLayout mParent;
-    protected LayoutInflater mInflater;
-    protected Handler mHandler = new Handler();
-    protected Activity mThisActivity = this;
-
-    // 重复点击检测
-    private long lastClickTime;
     // 对话框工具
     public final DialogUtil dialogUtil = new DialogUtil();
     // 输入参数
     public Intent intent;
+    protected FrameLayout mParent;
+    protected LayoutInflater mInflater;
+    protected Handler mHandler = new Handler();
+    protected Activity mThisActivity = this;
+    // 重复点击检测
+    private long lastClickTime;
+    private HashMap<Integer, ResultHandler> resultMap = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +64,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         resultMap.clear();
     }
 
-
     // 延迟点击实现
     public void doDelayClick(ReturnCall callback) {
         long bootedTime = SystemClock.elapsedRealtime();
@@ -76,13 +74,6 @@ public abstract class BaseActivity extends AppCompatActivity {
             }
         }
     }
-
-    // 通用的result处理
-    public interface ResultHandler {
-        void operate(int resultCode, Intent data);
-    }
-
-    private HashMap<Integer, ResultHandler> resultMap = new HashMap<>();
 
     protected void addResultHandler(int requestCode, ResultHandler handler) {
         if (resultMap.containsKey(requestCode)) {
@@ -102,5 +93,10 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     public void toast(String string) {
         DialogUtil.toast(this, string);
+    }
+
+    // 通用的result处理
+    public interface ResultHandler {
+        void operate(int resultCode, Intent data);
     }
 }

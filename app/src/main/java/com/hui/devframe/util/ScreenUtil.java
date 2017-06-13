@@ -10,11 +10,11 @@ import android.view.WindowManager;
 import com.hui.devframe.base.BaseApplication;
 
 public class ScreenUtil {
-    private static int DPI_LEVEL = -1;
     public static final int LEVEL_MDPI = 1;
     public static final int LEVEL_HDPI = 2;
     public static final int LEVEL_XHDPI = 3;
     public static final int LEVEL_XXHDPI = 4;
+    private static int DPI_LEVEL = -1;
 
     public static int dp2px(Context context, float dp) {
         final float scale = context.getApplicationContext().getResources().getDisplayMetrics().density;
@@ -30,6 +30,7 @@ public class ScreenUtil {
         final float scale = context.getApplicationContext().getResources().getDisplayMetrics().density;
         return (int) (px / scale + 0.5f);
     }
+
     /**
      * 将px值转换为sp值，保证文字大小不变
      *
@@ -54,17 +55,18 @@ public class ScreenUtil {
 
     /**
      * 或者View实际的位置（主要是减去了标题栏高度）
+     *
      * @param view
      * @return
      */
-    public static Rect getViewRect(View view){
+    public static Rect getViewRect(View view) {
         //获取标题栏高度
         Rect frame = new Rect();
-        ((Activity)view.getContext()).getWindow().getDecorView().getWindowVisibleDisplayFrame(frame);
+        ((Activity) view.getContext()).getWindow().getDecorView().getWindowVisibleDisplayFrame(frame);
 
         //获取View在屏幕中的top
         Rect viewRect = new Rect();
-        view.getGlobalVisibleRect (viewRect) ;
+        view.getGlobalVisibleRect(viewRect);
 
         Rect result = new Rect();
         result.left = viewRect.left;
@@ -81,7 +83,7 @@ public class ScreenUtil {
      */
     public static int getScreenWidth() {
         DisplayMetrics metrics = new DisplayMetrics();
-        ((WindowManager)BaseApplication.getApplication().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(metrics);
+        ((WindowManager) BaseApplication.getApplication().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(metrics);
         return metrics.widthPixels;
     }
 
