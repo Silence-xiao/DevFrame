@@ -9,7 +9,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import hui.devframe.R;
-import com.hui.devframe.common.base.BaseActivity;
+import com.hui.devframe.base.BaseActivity;
 
 /**
  * Created by wanghui on 16/9/29.
@@ -41,7 +41,7 @@ public class ItemAdapter extends BaseAdapter {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        convertView = LayoutInflater.from(initActivity).inflate(R.layout.ui_grid_item, parent, false);
+        convertView = LayoutInflater.from(initActivity).inflate(R.layout.ui_test_grid_item, parent, false);
         TextView tv = (TextView) convertView.findViewById(R.id.item_tv);
         tv.setOnClickListener(new View.OnClickListener() {
             @Override

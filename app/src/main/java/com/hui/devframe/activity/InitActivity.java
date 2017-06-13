@@ -10,8 +10,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import com.hui.devframe.activity.entry.ScrollLearnActivity;
-import com.hui.devframe.common.base.BaseActivity;
-import com.hui.devframe.common.util.ReturnCall;
+import com.hui.devframe.activity.learn.TestDetectorActivity;
+import com.hui.devframe.activity.learn.TestSwipeRefreshActivity;
+import com.hui.devframe.base.BaseActivity;
+import com.hui.devframe.util.ReturnCall;
 
 import hui.devframe.R;
 
@@ -28,7 +30,7 @@ public class InitActivity extends BaseActivity {
 
     @Override
     protected int getContentLayoutId() {
-        return R.layout.init_activity;
+        return R.layout.activity_init;
     }
 
     private void initView() {

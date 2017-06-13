@@ -9,7 +9,7 @@
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
 
     <application
-        android:name="com.hui.devframe.common.base.BaseApplication"
+        android:name="com.hui.devframe.base.BaseApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -22,18 +22,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.hui.devframe.activity.entry.FragmentLearnActivity" />
+        <activity android:name="com.hui.devframe.activity.fragment.FragmentLearnActivity" />
         <activity android:name="com.hui.devframe.activity.entry.PagerLearnActivity" />
         <activity android:name="com.hui.devframe.activity.entry.MatrixLearnActivity" />
-        <activity android:name="com.hui.devframe.veex.VeexActivity" />
-        <activity android:name="com.hui.devframe.activity.DrawActivity"
+        <activity android:name="com.hui.devframe.learn.veex.VeexActivity" />
+        <activity android:name="com.hui.devframe.activity.draw.DrawActivity"
             android:hardwareAccelerated="false" />
-        <activity android:name="com.hui.devframe.activity.MyDrawActivity" />
-        <activity android:name="com.hui.devframe.activity.TestDetectorActivity" />
-        <activity android:name="com.hui.devframe.activity.TestSwipeRefreshActivity" />
-        <activity android:name="com.hui.devframe.activity.NewDrawActivity" />
+        <activity android:name="com.hui.devframe.activity.draw.MyDrawActivity" />
+        <activity android:name="com.hui.devframe.activity.learn.TestDetectorActivity" />
+        <activity android:name="com.hui.devframe.activity.learn.TestSwipeRefreshActivity" />
+        <activity android:name="com.hui.devframe.activity.draw.NewDrawActivity" />
         <activity android:name="com.hui.devframe.activity.entry.ScrollLearnActivity" />
-        <activity android:name="com.hui.devframe.activity.Xfermodes">
+        <activity android:name="com.hui.devframe.activity.learn.XfermodesActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.SAMPLE_CODE" />

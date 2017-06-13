@@ -4,9 +4,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-import com.hui.devframe.common.base.BaseActivity;
-import com.hui.devframe.common.util.ScreenUtil;
-import com.hui.devframe.view.wave.CompatibleScrollView;
+import com.hui.devframe.base.BaseActivity;
+import com.hui.devframe.util.ScreenUtil;
+import com.hui.devframe.ui.wave.CompatibleScrollView;
 
 import hui.devframe.R;
 
@@ -38,6 +38,6 @@ public class ScrollLearnActivity extends BaseActivity {
 
     @Override
     protected int getContentLayoutId() {
-        return R.layout.test_scroll_top_activity;
+        return R.layout.activity_test_scroll_top;
     }
 }

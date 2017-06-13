@@ -26,7 +26,7 @@ public class PagerLearnActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.ui_view_pager_activity);
+        setContentView(R.layout.activity_test_view_pager);
 
         // list
         mUrls.add("http://imgs.ebrun.com/resources/2016_04/2016_04_01/201604014051459488484468.jpg");
