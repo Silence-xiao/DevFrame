@@ -22,7 +22,7 @@ public class NewDrawActivity extends BaseActivity {
         initView();
     }
 
-    private void initView() {
+    protected void initView() {
         mDrawView = (DrawPadView) findViewById(R.id.draw_pad_view);
         mCover = (Button) findViewById(R.id.draw_pad_cover);
         mPen = (Button) findViewById(R.id.draw_pad_pen);

@@ -23,7 +23,7 @@ public class TestDetectorActivity extends BaseActivity {
         initView();
     }
 
-    private void initView() {
+    protected void initView() {
         mGestureDetector = new GestureDetector(this, new MyOnGestureListener());
         test_linear_layout = (LinearLayout) findViewById(R.id.test_linear_layout);
         test_linear_layout.setOnTouchListener(new View.OnTouchListener() {

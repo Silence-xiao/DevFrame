@@ -21,7 +21,7 @@ public class ScrollLearnActivity extends BaseActivity {
         initView();
     }
 
-    private void initView() {
+    protected void initView() {
         mScroll = (CompatibleScrollView) findViewById(R.id.scroll_view);
         mText1 = (TextView) findViewById(R.id.scroll_text1);
         mScroll.setScrollViewListener(new CompatibleScrollView.ScrollViewListener() {

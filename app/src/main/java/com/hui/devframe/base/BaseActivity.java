@@ -15,9 +15,18 @@ import com.hui.devframe.util.ReturnCall;
 import java.util.HashMap;
 
 /**
+ * 基础功能的activity
  * Created by wanghui on 16/6/12.
  */
 public abstract class BaseActivity extends AppCompatActivity {
+
+    public void startPage(Class<?> cls) {
+        startActivity(new Intent(mThisActivity, cls));
+    }
+
+    public void startPage(Intent intent) {
+        startActivity(intent);
+    }
 
     private static final long clickSpanMillSeconds = 650;       // 重复点击检测延迟
     // 对话框工具
@@ -46,9 +55,12 @@ public abstract class BaseActivity extends AppCompatActivity {
         mInflater = LayoutInflater.from(this);
         mParent = (FrameLayout) findViewById(android.R.id.content);
 
+        initView();
         // 统一处理startActivityForResult的
         handleResult();
     }
+
+    protected abstract void initView();
 
     protected void getIntentData() {
     }

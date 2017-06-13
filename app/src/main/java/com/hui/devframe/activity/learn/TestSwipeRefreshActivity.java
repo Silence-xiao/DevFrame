@@ -23,7 +23,7 @@ public class TestSwipeRefreshActivity extends BaseActivity {
         initView();
     }
 
-    private void initView() {
+    protected void initView() {
         final TextView tv = (TextView) findViewById(R.id.textView1);
         final SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
         //设置刷新时动画的颜色，可以设置4个

@@ -14,6 +14,11 @@ public class FragmentLearnActivity extends BaseSingleFragmentActivity {
     }
 
     @Override
+    protected void initView() {
+
+    }
+
+    @Override
     protected Fragment createFragment() {
         return new LearnMainFragment();
     }

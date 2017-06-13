@@ -1,6 +1,5 @@
 package com.hui.devframe.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,7 +8,10 @@ import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.hui.devframe.activity.entry.MatrixLearnActivity;
+import com.hui.devframe.activity.entry.PagerLearnActivity;
 import com.hui.devframe.activity.entry.ScrollLearnActivity;
+import com.hui.devframe.activity.fragment.FragmentLearnActivity;
 import com.hui.devframe.activity.learn.TestDetectorActivity;
 import com.hui.devframe.activity.learn.TestSwipeRefreshActivity;
 import com.hui.devframe.base.BaseActivity;
@@ -33,68 +35,46 @@ public class InitActivity extends BaseActivity {
         return R.layout.activity_init;
     }
 
-    private void initView() {
+    protected void initView() {
     }
 
     private void initButtons() {
         mRoot = (ViewGroup) findViewById(R.id.init_root);
 
-//        createButton("测试Fragment", new ReturnCall() {
-//            @Override
-//            public void call() {
-//                startActivity(new Intent(InitActivity.this, FragmentLearnActivity.class));
-//            }
-//        });
-//        createButton("测试ViewPager", new ReturnCall() {
-//            @Override
-//            public void call() {
-//                startActivity(new Intent(InitActivity.this, PagerLearnActivity.class));
-//            }
-//        });
-//        createButton("测试Matrix", new ReturnCall() {
-//            @Override
-//            public void call() {
-//                startActivity(new Intent(InitActivity.this, MatrixLearnActivity.class));
-//            }
-//        });
-//        createButton("veex", new ReturnCall() {
-//            @Override
-//            public void call() {
-//                startActivity(new Intent(InitActivity.this, VeexActivity.class));
-//            }
-//        });
-//        createButton("Picasso测试", new ReturnCall() {
-//            @Override
-//            public void call() {
-//                Picasso.with(InitActivity.this).load("http://pic77.nipic.com/file/20150907/7257561_095930209148_2.jpg").into(mImg, new Callback() {
-//                    @Override
-//                    public void onSuccess() {
-//                        log.e("Picasso success");
-//                    }
-//
-//                    @Override
-//                    public void onError() {
-//                        log.e("Picasso error");
-//                    }
-//                });
-//            }
-//        });
+        createButton("测试Fragment", new ReturnCall() {
+            @Override
+            public void call() {
+                startPage(FragmentLearnActivity.class);
+            }
+        });
+        createButton("测试ViewPager", new ReturnCall() {
+            @Override
+            public void call() {
+                startPage(PagerLearnActivity.class);
+            }
+        });
+        createButton("测试Matrix", new ReturnCall() {
+            @Override
+            public void call() {
+                startPage(MatrixLearnActivity.class);
+            }
+        });
         createButton("TestDetectorActivity", new ReturnCall() {
             @Override
             public void call() {
-                startActivity(new Intent(InitActivity.this, TestDetectorActivity.class));
+                startPage(TestDetectorActivity.class);
             }
         });
         createButton("scroll", new ReturnCall() {
             @Override
             public void call() {
-                startActivity(new Intent(InitActivity.this, ScrollLearnActivity.class));
+                startPage(ScrollLearnActivity.class);
             }
         });
         createButton("refresh", new ReturnCall() {
             @Override
             public void call() {
-                startActivity(new Intent(InitActivity.this, TestSwipeRefreshActivity.class));
+                startPage(TestSwipeRefreshActivity.class);
             }
         });
         final ImageView view = (ImageView) findViewById(R.id.test_rect2);
