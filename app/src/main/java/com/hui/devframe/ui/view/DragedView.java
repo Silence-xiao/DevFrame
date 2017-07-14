@@ -21,10 +21,6 @@ import static android.view.MotionEvent.ACTION_UP;
  * Created by wanghui on 16/5/31.
  */
 public class DragedView extends View {
-    private TextView mLeft;
-    private TextView mRight;
-    private View mIndicator;
-
     private Paint mPaint;
     private Scroller mScroller;
     private float mLastX, mLastY, mDx, mDy;
@@ -70,6 +66,11 @@ public class DragedView extends View {
                 break;
         }
         return true;
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
     @Override
