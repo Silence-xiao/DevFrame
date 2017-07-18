@@ -5,7 +5,6 @@ import android.view.View.MeasureSpec;
 /**
  * Created by wanghui on 2017/6/14.
  */
-
 public class ViewUtil {
     public static int resolveSize(int size, int measureSpec) {
         int result = size;
