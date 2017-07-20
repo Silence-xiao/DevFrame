@@ -77,36 +77,6 @@ public class InitActivity extends BaseActivity {
                 startPage(TestSwipeRefreshActivity.class);
             }
         });
-        final ImageView view = (ImageView) findViewById(R.id.test_rect2);
-        createButton("anim", new ReturnCall() {
-            @Override
-            public void call() {
-                TranslateAnimation tran = new TranslateAnimation(Animation.RELATIVE_TO_PARENT, 0, Animation.RELATIVE_TO_PARENT, 1, Animation.ABSOLUTE, 100, Animation.ABSOLUTE, 0);
-                tran.setDuration(3000);
-
-                tran.setFillAfter(true);
-                tran.setRepeatCount(0);
-                tran.setAnimationListener(new Animation.AnimationListener() {
-                    @Override
-                    public void onAnimationStart(Animation animation) {
-
-                    }
-
-                    @Override
-                    public void onAnimationEnd(Animation animation) {
-
-                    }
-
-                    @Override
-                    public void onAnimationRepeat(Animation animation) {
-
-                    }
-                });
-                findViewById(R.id.test_rect).setPadding(0, 0, 0, 0);
-                findViewById(R.id.test_rect).startAnimation(tran);
-                toast(view.getTop() + "");
-            }
-        });
     }
 
     private void createButton(String text, final ReturnCall call) {
