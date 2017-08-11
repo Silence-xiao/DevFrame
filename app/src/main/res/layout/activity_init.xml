@@ -5,6 +5,11 @@
     android:background="#ffffff"
     android:orientation="vertical">
 
+    <com.hui.devframe.ui.draw.TouchPosView
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="@color/green"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

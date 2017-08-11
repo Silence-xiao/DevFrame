@@ -6,6 +6,8 @@ import android.os.Handler;
 import android.os.Looper;
 import android.widget.Toast;
 
+import com.hui.devframe.base.BaseApplication;
+
 /**
  * dialog工具
  * Created by wanghui on 15/9/1.
@@ -13,6 +15,14 @@ import android.widget.Toast;
 public class DialogUtil {
 
     private static ProgressDialog dialog;
+
+    public static void toast(final String text) {
+        toast(BaseApplication.getApplication(), text);
+    }
+
+    public static void toastLong(final String text) {
+        toastLong(BaseApplication.getApplication(), text);
+    }
 
     /**
      * 显示toast，length short
